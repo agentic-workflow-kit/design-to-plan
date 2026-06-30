@@ -22,15 +22,15 @@ it is not a frozen JSON Schema, validator fixture, runtime command, or implement
 
 ### Technical Design Handoff Facts
 
-| ID       | Category          | Planner-facing fact                                                                                                                          |
-| -------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| SRC-001  | source            | Source Product PRD is `docs/product/design-to-plan.md`; required AC IDs are `AC-TRACE-001`, `AC-DAG-001`, `AC-EVID-001`, and `AC-SCOPE-001`. |
-| CTX-001  | boundary          | Planning consumes Product and Technical Design contracts and produces to Jig's plan shape; it owns no upstream decisions.                    |
-| DEL-001  | delivery planning | Create a contract story that maps accepted inputs to Jig plan properties.                                                                    |
-| DEL-002  | delivery planning | Create an example-fixture story that proves traceability from AC IDs to design facts to Jig properties.                                      |
-| SEQ-001  | sequencing        | The contract story must land before the fixture story because the fixture cites the contract's required mappings.                            |
-| VAL-001  | validation        | Evidence is `pnpm check`, `git diff --check`, and reviewer inspection of the traceability table.                                             |
-| STOP-001 | stop condition    | Stop if any Product AC ID or required handoff fact is missing, blank, TBD, or only implied by prose.                                         |
+| ID       | Category          | Planner-facing fact                                                                                                                                         |
+| -------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRC-001  | source            | Source Product PRD is `docs/product/design-to-plan.md`; required AC IDs are `AC-PLAN-001`, `AC-TRACE-001`, `AC-DAG-001`, `AC-EVID-001`, and `AC-SCOPE-001`. |
+| CTX-001  | boundary          | Planning consumes Product and Technical Design contracts and produces to Jig's plan shape; it owns no upstream decisions.                                   |
+| DEL-001  | delivery planning | Create a contract story that maps accepted inputs to Jig plan properties.                                                                                   |
+| DEL-002  | delivery planning | Create an example-fixture story that proves traceability from AC IDs to design facts to Jig properties.                                                     |
+| SEQ-001  | sequencing        | The contract story must land before the fixture story because the fixture cites the contract's required mappings.                                           |
+| VAL-001  | validation        | Evidence is `pnpm check`, `git diff --check`, and reviewer inspection of the traceability table.                                                            |
+| STOP-001 | stop condition    | Stop if any Product AC ID or required handoff fact is missing, blank, TBD, or only implied by prose.                                                        |
 
 ## Illustrative Plan Shape
 
