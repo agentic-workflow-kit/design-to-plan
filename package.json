@@ -1,7 +1,7 @@
 {
-  "name": "@agentic-workflow-kit/repo-template",
+  "name": "@agentic-workflow-kit/design-to-plan",
   "version": "0.0.0",
-  "description": "Describe this repo. (Rename to @agentic-workflow-kit/<repo> after generating.)",
+  "description": "Planning-layer docs for turning approved designs into Jig-ready execution plans.",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.9.0",

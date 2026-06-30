@@ -1,24 +1,11 @@
-<!--
-USING THIS TEMPLATE — delete this block after creating your repo.
-1. Replace every <repo> and one-line-description placeholder (this README, AGENTS.md,
-   docs/*, and the package.json name + description).
-2. Add your archetype's source tier beside docs/ (see the org REPO-STRUCTURE.md):
-   - app / engine: packages/ or src/, tests/, build config, scripts/
-   - skills pack: skills/, methodologies/ (or profiles), evals/, scripts/
-   - docs-only: nothing beyond docs/
-3. Apply the org repo standard (ruleset + merge settings) once the repo exists on GitHub:
-     bash scripts/apply-repo-standard.sh <owner>/<repo>
-4. Delete this comment block. Keep scripts/apply-repo-standard.sh for future re-runs.
--->
+# design-to-plan
 
-# <repo>
-
-> One-line description of what `<repo>` is and where it sits in the agentic-workflow-kit suite
-> spine: `define / PRD -> technical-design -> jig (run) -> learning loop`.
+> Planning-layer seed for turning approved technical designs into Jig-ready execution plans.
 
 ## Status
 
-> Early / planned. Describe current maturity here.
+Seeded docs-only repo. It defines product and design contracts for the Planning layer; it does not
+ship a runtime, CLI, validator, schema package, skill pack, or implementation planner.
 
 ## Development
 
@@ -36,9 +23,18 @@ pnpm check
 
 ## Relationship to the suite
 
-`<repo>` is part of [`agentic-workflow-kit`](https://github.com/agentic-workflow-kit), a polyrepo
-family of standalone, composable products for an agentic software-development lifecycle. Each repo
-is independently useful and composes through shared contracts, not internals.
+`design-to-plan` sits between
+[`technical-design`](https://github.com/agentic-workflow-kit/technical-design) and
+[`jig`](https://github.com/agentic-workflow-kit/jig):
+
+```text
+PRODUCT ---------> DESIGN ----------> PLANNING --------> DELIVERY
+define / PRD       technical-design   design-to-plan     jig (run)
+```
+
+Planning owns no upstream product or design decision. It consumes Product PRD/acceptance-criteria
+IDs and the Technical Design handoff contract, then produces to Jig's execution-plan contract
+shape.
 
 ## License
 

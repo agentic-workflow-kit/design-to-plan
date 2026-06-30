@@ -1,9 +1,9 @@
 ---
-title: <repo> — documentation
+title: design-to-plan — documentation
 status: draft
 ---
 
-# <repo> — documentation
+# design-to-plan — documentation
 
 Documentation is organized by **altitude**: product (intent) above design (mechanics).
 
