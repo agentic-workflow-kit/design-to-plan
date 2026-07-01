@@ -42,17 +42,22 @@ Each stage names the acceptance criterion and contract section it satisfies.
    invented scope, the flow **stops and attributes** instead of planning (`AC-STOP-001`,
    `AC-SCOPE-001`; [Refusal and Stop Behavior](design-to-plan-contract.md#refusal-and-stop-behavior)).
 
-3. **Decompose into a story set.** Produce reviewable stories with stable IDs, intent, scope boundary,
-   and source references drawn from `DEL-*` delivery facts and Product ACs. The planner does not invent
-   implementation package layout (`AC-SCOPE-001`).
+3. **Decompose into a projection-only story set.** Produce reviewable stories with stable IDs, intent,
+   scope boundary, and source references drawn from `DEL-*` delivery facts and Product ACs. The planner
+   may add review-friendly organization, but it does not invent implementation package layout, runtime
+   behavior, or net-new scope (`AC-SCOPE-001`).
 
-4. **Build the dependency and eligibility graph.** Represent producer-before-consumer constraints and
-   independent stories explicitly, from `SEQ-*` facts, so hidden dependencies are review-blocking
-   (`AC-DAG-001`). Runtime eligibility evaluation stays Jig's.
+4. **Build the dependency and eligibility graph, then reconcile it.** Represent producer-before-consumer
+   constraints and independent stories explicitly from `SEQ-*` facts, then reconcile every consumed
+   shared surface (`FILE-*`), failure/degraded token (`FAIL-*`), and producer-owned input to exactly one
+   source story or already-approved upstream artifact. Hidden dependencies, phantom consumers, or
+   unsupported dependency edges are review-blocking and route to stop (`AC-DAG-001`).
 
-5. **Attach done / evidence requirements.** Give each story falsifiable evidence — commands or review
-   gates when supplied — that cites the Product and design facts it proves, from `VAL-*` facts
-   (`AC-EVID-001`).
+5. **Attach done / evidence requirements and source every predicate.** Give each story falsifiable
+   evidence — concrete commands, named gates, reviewer checks, or preserved artifacts — that cites the
+   Product and design facts it proves, from `VAL-*` facts (`AC-EVID-001`). When a done-condition is
+   relational or compound, source every operand explicitly; an unnamed category or one-sided predicate is
+   a stop condition, not an acceptable approximation.
 
 6. **Run the traceability check.** Confirm every story traces
    `Product PRD AC ID -> Technical Design handoff fact ID -> Jig plan property`, and that every
@@ -61,14 +66,15 @@ Each stage names the acceptance criterion and contract section it satisfies.
    fixture [`examples/minimal-design-to-plan.md`](examples/minimal-design-to-plan.md) shows the chain
    end to end.
 
-7. **Stop or emit.** If any stop condition holds, stop and name the missing or conflicting source ID
-   and its owner (`AC-STOP-001`). Otherwise emit a plan that preserves Jig's `execution-plan-shape-v0`
-   properties (`AC-PLAN-001`;
+7. **Stop or emit.** If any stop condition holds, stop and name the missing or conflicting source ID,
+   the failing projection/reconciliation check, and its owner (`AC-STOP-001`). Otherwise emit a plan
+   that preserves Jig's `execution-plan-shape-v0` properties (`AC-PLAN-001`;
    [Required Output Properties](design-to-plan-contract.md#required-output-properties)).
 
 The gate and traceability check both route to the same **stop-and-attribute** outcome: Planning never
 produces or revises a plan around a missing or conflicting source — it names the source ID and the
-owner responsible for resolving it.
+owner responsible for resolving it. Projection-only planning means the emitted plan is a reshaping of
+approved source facts into Jig properties, not a second design pass.
 
 ## Standalone and in the suite
 

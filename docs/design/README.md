@@ -21,14 +21,14 @@ runtime package, or eval harness here (D-002, D-006).
 
 - [`design-to-plan-contract.md`](./design-to-plan-contract.md) — the Planning-layer transformation
   contract: accepted inputs, required output properties (Jig's `execution-plan-shape-v0`), the
-  traceability rule, refusal and stop behavior, the review checklist, and verified Product
-  reconciliation. **Start here.**
+  projection-only invariant, traceability rule, refusal and stop behavior, whole-graph closure
+  checks, and verified Product reconciliation. **Start here.**
 
 ## Lifecycle
 
-- [`flows.md`](./flows.md) — the staged transformation (ingest -> validate handoff -> decompose ->
-  dependency graph -> done/evidence -> traceability check -> stop-or-emit), with an inline diagram and
-  the standalone-vs-suite seam split.
+- [`flows.md`](./flows.md) — the staged transformation (ingest -> validate handoff -> projection-only
+  decomposition -> dependency graph and reconciliation -> done/evidence and predicate sourcing ->
+  traceability check -> stop-or-emit), with an inline diagram and the standalone-vs-suite seam split.
 
 ## Decisions
 
@@ -44,7 +44,8 @@ runtime package, or eval harness here (D-002, D-006).
 ## Skills
 
 - [`../../skills/author-design-to-plan/`](../../skills/author-design-to-plan/) — implements the contract's seven
-  stages end to end: ingest, validate the handoff, decompose, build the dependency graph, attach
-  evidence, run the traceability check, stop or emit.
+  stages end to end: ingest, validate the handoff, project a story set, reconcile the dependency
+  graph and source closure, attach evidence, run the traceability check, stop or emit.
 - [`../../skills/review-plan/`](../../skills/review-plan/) — independently reviews a plan already
-  produced by `author-design-to-plan` (or an equivalent artifact) against this contract's Review Checklist.
+  produced by `author-design-to-plan` (or an equivalent artifact) against this contract's Review
+  Checklist, including phantom-consumer, evidence-binding, and operand-sourcing defects.

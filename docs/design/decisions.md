@@ -144,3 +144,20 @@ Status legend: `applied`, `open-deferred`, `rejected`.
   When-Not-To-Use sections are updated to carve "skill" out of their "no skill" language
   accordingly, rather than leaving those pages self-contradictory.
 - **Status:** applied
+
+## D-010 - Make design-to-plan explicitly projection-only and stop on whole-graph/source-closure gaps
+
+- **Date:** 2026-07-01
+- **Driver:** Owner hardening request for prior-art lessons from `workflow-kit`, especially
+  phantom-consumer dependencies, prose-only evidence, one-sided predicate sourcing, and stop drift.
+- **Decision:** accepted
+- **Rationale:** The useful lesson from the prior art is not its package architecture; it is that a
+  plan becomes unreliable when it silently invents producer/consumer links, accepts evidence with no
+  concrete gate, or emits a plan despite missing source operands. design-to-plan owns those defect
+  classes in repo-native terms because it is the layer projecting source facts into a Jig-ready plan.
+- **Consequence:** The contract, lifecycle, skills, templates, and illustrative fixture now treat
+  planning as a projection-only transformation. Emitted plans must reconcile the whole declared
+  graph, bind evidence to named gates/checks/artifacts, source every relational/compound operand,
+  and stop with a source ID plus owner when those checks fail. No workflow-kit execution-package,
+  tracker, or routing structures are imported here.
+- **Status:** applied

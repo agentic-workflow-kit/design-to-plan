@@ -12,15 +12,15 @@ not edit the plan.
 
 ## Findings
 
-| #   | Checklist item          | Plan section                    | Requirement violated              | Finding                       | Suggested correction                      |
-| --- | ----------------------- | ------------------------------- | --------------------------------- | ----------------------------- | ----------------------------------------- |
-| 1   | `<checklist item name>` | `<section heading in the plan>` | `<contract requirement or AC ID>` | `<what is wrong, concretely>` | `<what would resolve it, if unambiguous>` |
+| #   | Checklist item          | Plan section                    | Requirement violated              | Source evidence                            | Finding                       | Suggested correction                      |
+| --- | ----------------------- | ------------------------------- | --------------------------------- | ------------------------------------------ | ----------------------------- | ----------------------------------------- |
+| 1   | `<checklist item name>` | `<section heading in the plan>` | `<contract requirement or AC ID>` | `<missing / conflicting AC, fact, or row>` | `<what is wrong, concretely>` | `<what would resolve it, if unambiguous>` |
 
 If no findings survive review, state that explicitly instead of leaving an empty table:
 
 > No findings. All Required Output Properties are present and populated, traceability holds for
-> every story, and no reconciliation, evidence-binding, sizing, or scope-discipline issue was
-> found.
+> every story, and no reconciliation, evidence-binding, predicate-sourcing, sizing,
+> scope-discipline, or stop-drift issue was found.
 
 ## Disposition Log
 

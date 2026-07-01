@@ -39,12 +39,26 @@ A planning-ready input set includes:
 - a Product PRD or equivalent product artifact with stable acceptance-criteria IDs;
 - an approved technical-design artifact whose frontmatter identifies
   `handoff_contract: technical-design-handoff-v0`;
-- a complete `Planner Handoff Summary` with stable planner-facing fact IDs;
+- a complete `Planner Handoff Summary` with stable planner-facing fact IDs, including the `DEL-*`,
+  `SEQ-*`, `FILE-*`, `FAIL-*`, `VAL-*`, and `STOP-*` rows the plan needs to preserve;
 - the current Jig `execution-plan-shape-v0` contract shape;
 - track identity plus policy and work-profile references that Jig can interpret later.
 
 Planning may read methodology-specific design detail for context, but the required planning facts
 must be present in the planner-facing handoff summary.
+
+## Projection Invariant
+
+Planning is **projection-only**: it projects Product acceptance-criteria IDs and approved
+technical-design handoff facts into Jig plan properties. It may add planning organization that
+makes those projections reviewable — such as story IDs, explicit out-of-scope notes, reconciliation
+tables, or operand-source rows — but those additions must be lossless reorganizations of cited
+sources, not new scope.
+
+If a required plan statement cannot be projected from a cited Product artifact, technical-design
+fact, or already-approved upstream artifact, Planning stops. It does not fill the gap by inventing
+product scope, design facts, package layout, model routing, execution-host behavior, or
+implementation detail.
 
 ## Required Output Properties
 
@@ -61,6 +75,38 @@ At design altitude, a Planning output preserves these Jig plan properties:
 | Policy and work-profile references | Reference policy/work-profile identities and version posture without embedding mutable overrides.                                                               |
 | Stack-seam requirements            | Name required Agent, Execution Host, Forge, and Work Source capabilities or source references when the design requires them.                                    |
 | Constraints and limits             | Carry concurrency, sequencing, retry/budget, isolation, branch/review, non-goal, and out-of-scope constraints supplied by Product, Technical Design, or policy. |
+
+## Whole-Graph Reconciliation
+
+Before Planning may emit a plan, it reconciles the whole graph it declares:
+
+- every dependency edge in the plan cites a `SEQ-*` fact or another source-backed upstream reason
+  the technical design already approved;
+- every consumed shared surface (`FILE-*`), failure/degraded token (`FAIL-*`), or other
+  producer-owned input named by a story resolves to exactly one producer story in the emitted plan
+  or one already-approved upstream artifact;
+- a **phantom consumer** is a story that claims to wait on, consume, or prove a producer-owned item
+  without a matching dependency/source row naming what it consumes;
+- an **unsupported dependency edge** is an ordering edge the plan introduces without a cited source
+  fact requiring it.
+
+Phantom consumers, unsupported dependency edges, and missing producer/source closure are stop
+conditions. They are review-blocking gaps, not cleanup for a later reviewer.
+
+## Evidence Binding and Predicate Sourcing
+
+Planning binds evidence and done conditions to concrete sources:
+
+- every evidence item names a concrete command, named gate lane, specific reviewer check, or
+  preserved artifact, not prose-only intent such as "tests exist" or "works correctly";
+- every relational or compound condition is decomposed enough that each predicate names the
+  concrete source for every operand it evaluates;
+- naming only an input category, citation, or ref (for example "the handoff", "the policy", or
+  "the projections") is not enough when the plan is asserting a condition about specific values or
+  boundaries.
+
+An unsourced operand, prose-only evidence item, or produced/consumed value with no cited source is a
+stop condition. Planning must name the gap and its owner instead of emitting a partial plan.
 
 ## Traceability Rule
 
@@ -89,7 +135,14 @@ Planning stops instead of producing or revising a plan when any of these conditi
 - A `DEL-*` story area lacks source, boundary, validation, or stop-condition references.
 - Dependencies are hidden, contradictory, cyclic without an explicit design rationale, or impossible
   to prove from `SEQ-*` facts.
+- The plan introduces a phantom consumer, unsupported dependency edge, or any consumed shared
+  surface / failure token / producer-owned input with no single authoritative producer or upstream
+  source.
 - Evidence is unprovable, vacuous, or detached from Product AC IDs and design facts.
+- Evidence names only prose categories, unnamed checks, or artifacts with no concrete inspection
+  path.
+- A relational or compound condition leaves any operand unsourced, or cites an input category rather
+  than the specific value source the condition evaluates.
 - The requested plan would invent product scope, technical-design facts, package layout, policy
   semantics, model routing, execution-host behavior, or implementation details not present in the
   inputs.
@@ -106,8 +159,14 @@ A design-to-plan output is acceptable when:
   scope with a source-backed reason;
 - every cited `DEL-*`, `SEQ-*`, `VAL-*`, and `STOP-*` fact is reflected in the story set,
   dependency graph, done/evidence requirements, or stop behavior;
+- every consumed `FILE-*`, `FAIL-*`, or producer-owned value resolves to exactly one source story or
+  already-approved upstream artifact, with no phantom consumers or unsupported dependency edges;
+- evidence is bound to a concrete command, named gate lane, reviewer check, or preserved artifact;
+- every relational or compound condition names the concrete source for each operand it evaluates;
 - authority expectations and policy/work-profile references are declared without granting authority;
 - stack-seam assumptions are stated as required capabilities or source refs, not implementations;
+- the emitted plan remains a projection of source facts into Jig plan properties rather than a new
+  design, package layout, or runtime policy layer;
 - the fixture or plan is checked against Jig's v0 shape properties, not against an invented schema.
 
 ## Product Reconciliation
@@ -130,8 +189,9 @@ artifacts in equivalent shapes. What was checked:
 - Jig's output seam — `jig/docs/design/contracts/execution-plan-contract-v0.md` is the shape the
   Required Output Properties preserve.
 - The Technical Design input seam — the id `technical-design-handoff-v0` and the handoff fact-ID
-  prefixes this contract and its fixture rely on (including `SRC-`, `CTX-`, `DEL-`, `SEQ-`, `VAL-`,
-  and `STOP-`) are defined in `technical-design/docs/design/technical-design-handoff-contract.md`.
+  prefixes this contract and its fixture rely on (including `SRC-`, `CTX-`, `DEL-`, `SEQ-`, `FILE-`,
+  `FAIL-`, `VAL-`, and `STOP-`) are defined in
+  `technical-design/docs/design/technical-design-handoff-contract.md`.
 - The Product AC IDs cited here match the six in [`../product/design-to-plan.md`](../product/design-to-plan.md).
 
 No conflict was found between this design contract and the current Product, Technical Design, or Jig
