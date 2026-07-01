@@ -137,7 +137,7 @@ accepted inputs, required output properties, and stop behavior in the
 - Planning consumes, but does not own, the Technical Design handoff contract identified as
   `technical-design-handoff-v0`.
 - Planning produces to Jig's `execution-plan-shape-v0` contract shape from
-  `jig/docs/design/execution-plan-contract-v0.md`.
+  `jig/docs/design/contracts/execution-plan-contract-v0.md`.
 - Jig's v0 plan contract is not a frozen JSON Schema. This repo must not publish a schema,
   validator, runtime package, CLI, or TypeScript interface for it in this seed.
 - The legacy `workflow-kit` design-to-plan material is prior art only. It is not an authority and
