@@ -35,8 +35,10 @@ this repo ships no skill.
 | DEL-001  | delivery planning | Create a contract story that maps accepted inputs to Jig plan properties.                                                                                                  |
 | DEL-002  | delivery planning | Create an example-fixture story that proves traceability from AC IDs to design facts to Jig properties.                                                                    |
 | SEQ-001  | sequencing        | The contract story must land before the fixture story because the fixture cites the contract's required mappings.                                                          |
-| VAL-001  | validation        | Evidence is the repo gate `pnpm check` and reviewer inspection of the traceability table.                                                                                  |
+| FILE-001 | shared surface    | The fixture consumes the contract doc as a reviewed upstream source; it must name that dependency explicitly rather than implying it in prose.                             |
+| VAL-001  | validation        | Evidence is the repo gate `pnpm check` and reviewer inspection of the traceability, reconciliation, and operand-source tables.                                             |
 | STOP-001 | stop condition    | Stop if any Product AC ID or required handoff fact is missing, blank, TBD, or only implied by prose.                                                                       |
+| STOP-002 | stop condition    | Stop if the fixture names a dependency, consumed source, or review predicate with no cited producer/source row.                                                            |
 
 ## Illustrative Plan Shape
 
@@ -49,7 +51,7 @@ this repo ships no skill.
 | Producer             | `design-to-plan` planning contract fixture                                                |
 | Track                | `m4-planning-layer-seed`                                                                  |
 | Product refs         | `AC-PLAN-001`, `AC-TRACE-001`, `AC-DAG-001`, `AC-EVID-001`, `AC-SCOPE-001`, `AC-STOP-001` |
-| Design refs          | `CTX-001`, `DEL-001`, `DEL-002`, `SEQ-001`, `VAL-001`, `STOP-001`                         |
+| Design refs          | `CTX-001`, `DEL-001`, `DEL-002`, `SEQ-001`, `FILE-001`, `VAL-001`, `STOP-001`, `STOP-002` |
 
 ### Track Binding
 
@@ -61,10 +63,10 @@ this repo ships no skill.
 
 ### Story Set
 
-| Story ID  | Title                          | Product refs                                                 | Design refs                      | Scope                                            | Depends on  |
-| --------- | ------------------------------ | ------------------------------------------------------------ | -------------------------------- | ------------------------------------------------ | ----------- |
-| STORY-001 | Define design-to-plan contract | `AC-PLAN-001`, `AC-TRACE-001`, `AC-SCOPE-001`, `AC-STOP-001` | `CTX-001`, `DEL-001`, `STOP-001` | `docs/design/design-to-plan-contract.md`         | None        |
-| STORY-002 | Add traceability fixture       | `AC-DAG-001`, `AC-EVID-001`, `AC-TRACE-001`                  | `DEL-002`, `SEQ-001`, `VAL-001`  | `docs/design/examples/minimal-design-to-plan.md` | `STORY-001` |
+| Story ID  | Title                          | Product refs                                                 | Design refs                                             | Scope                                            | Produces / preserves                                      | Depends on  |
+| --------- | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------- | ----------- |
+| STORY-001 | Define design-to-plan contract | `AC-PLAN-001`, `AC-TRACE-001`, `AC-SCOPE-001`, `AC-STOP-001` | `CTX-001`, `DEL-001`, `STOP-001`                        | `docs/design/design-to-plan-contract.md`         | Required plan-property mappings and stop rules            | None        |
+| STORY-002 | Add traceability fixture       | `AC-DAG-001`, `AC-EVID-001`, `AC-TRACE-001`, `AC-STOP-001`   | `DEL-002`, `SEQ-001`, `FILE-001`, `VAL-001`, `STOP-002` | `docs/design/examples/minimal-design-to-plan.md` | An emitted-plan example with explicit source-closure rows | `STORY-001` |
 
 ### Dependency and Eligibility Model
 
@@ -75,20 +77,34 @@ STORY-001 -> STORY-002
 `STORY-002` is not eligible until `STORY-001` lands because the fixture cites the contract's mapping
 rules. No hidden independent story is present in this minimal fixture.
 
+### Whole-Graph Reconciliation
+
+| Consumer story | Consumed item                                               | Source fact | Closed by   |
+| -------------- | ----------------------------------------------------------- | ----------- | ----------- |
+| `STORY-002`    | Contract property mappings used by the fixture              | `SEQ-001`   | `STORY-001` |
+| `STORY-002`    | `docs/design/design-to-plan-contract.md` as reviewed source | `FILE-001`  | `STORY-001` |
+
 ### Done and Evidence Requirements
 
-| Story ID  | Evidence                                                                                        | Proves                                                                                                                                        |
-| --------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| STORY-001 | Reviewer confirms accepted inputs, required outputs, and refusal behavior are named.            | `AC-SCOPE-001`, `AC-STOP-001`; `CTX-001`; `STOP-001`; Jig plan identity, story set, authority, policy, stack-seam, and constraint properties. |
-| STORY-002 | Reviewer confirms the table maps Product AC IDs to Technical Design fact IDs to Jig properties. | `AC-TRACE-001`; `DEL-002`; Jig provenance, story set, dependency graph, and done/evidence properties.                                         |
-| STORY-002 | The repo gate `pnpm check` passes.                                                              | `AC-EVID-001`; `VAL-001`; expected automated-check evidence category.                                                                         |
+| Story ID  | Evidence                                                                                                                        | Binding                  | Proves                                                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| STORY-001 | Reviewer confirms accepted inputs, required outputs, and refusal behavior are named.                                            | Contract review          | `AC-SCOPE-001`, `AC-STOP-001`; `CTX-001`; `STOP-001`; Jig plan identity, story set, authority, policy, stack-seam, and constraint properties.  |
+| STORY-002 | Reviewer confirms the tables map Product AC IDs to Technical Design fact IDs to Jig properties and close every consumed source. | Fixture review checklist | `AC-TRACE-001`, `AC-DAG-001`, `AC-STOP-001`; `DEL-002`; `SEQ-001`; `FILE-001`; Jig provenance, story set, dependency graph, and stop behavior. |
+| STORY-002 | The repo gate `pnpm check` passes.                                                                                              | `pnpm check`             | `AC-EVID-001`; `VAL-001`; expected automated-check evidence category.                                                                          |
+
+### Predicate and Operand Source Closure
+
+| Story ID  | Predicate or condition                                                        | Operand sources                                                                                                   | Design refs            |
+| --------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| STORY-002 | Fixture Product refs stay within the approved AC set                          | left: fixture `Product refs`; right: `SRC-001` required AC-ID set                                                 | `SRC-001`, `DEL-002`   |
+| STORY-002 | Fixture may emit only if every consumed source row names a source closure row | left: fixture Whole-Graph Reconciliation table; right: each row's cited producer plus `STOP-002` stop requirement | `FILE-001`, `STOP-002` |
 
 ### Authority and Approval Needs
 
-| Story ID  | Worker may request                   | Runner-owned         | Doorbell / re-approval                                            |
-| --------- | ------------------------------------ | -------------------- | ----------------------------------------------------------------- |
-| STORY-001 | read docs, edit Markdown, run checks | push, open PR, merge | policy changes, schema claims, runtime additions                  |
-| STORY-002 | read docs, edit Markdown, run checks | push, open PR, merge | missing Product AC IDs, missing design facts, unprovable evidence |
+| Story ID  | Worker may request                   | Runner-owned         | Doorbell / re-approval                                                                   |
+| --------- | ------------------------------------ | -------------------- | ---------------------------------------------------------------------------------------- |
+| STORY-001 | read docs, edit Markdown, run checks | push, open PR, merge | policy changes, schema claims, runtime additions                                         |
+| STORY-002 | read docs, edit Markdown, run checks | push, open PR, merge | missing Product AC IDs, missing design facts, unsourced operands, or unprovable evidence |
 
 ### Stack-Seam Requirements
 
@@ -105,18 +121,19 @@ rules. No hidden independent story is present in this minimal fixture.
   landed in a later story; see the predates-D-009 note above).
 - No schema, validator, CLI, runtime package, `src/`, eval harness, or implementation package
   decomposition.
-- Stop rather than invent Product AC IDs, design fact IDs, policy semantics, or Jig runtime behavior.
+- Stop rather than invent Product AC IDs, design fact IDs, producer/source closure, policy
+  semantics, or Jig runtime behavior.
 
 ## Traceability Check Against Jig v0 Shape
 
-| Jig plan property                  | Product refs                  | Design refs           |
-| ---------------------------------- | ----------------------------- | --------------------- |
-| Plan identity and provenance       | `AC-PLAN-001`, `AC-TRACE-001` | `SRC-001`, `CTX-001`  |
-| Track binding                      | `AC-SCOPE-001`                | `CTX-001`             |
-| Story set                          | `AC-TRACE-001`                | `DEL-001`, `DEL-002`  |
-| Dependency and eligibility model   | `AC-DAG-001`                  | `SEQ-001`             |
-| Done and evidence requirements     | `AC-EVID-001`                 | `VAL-001`             |
-| Authority and approval needs       | `AC-SCOPE-001`, `AC-STOP-001` | `STOP-001`            |
-| Policy and work-profile references | `AC-SCOPE-001`                | `CTX-001`             |
-| Stack-seam requirements            | `AC-SCOPE-001`                | `CTX-001`, `STOP-001` |
-| Constraints and limits             | `AC-SCOPE-001`                | `STOP-001`            |
+| Jig plan property                  | Product refs                  | Design refs            |
+| ---------------------------------- | ----------------------------- | ---------------------- |
+| Plan identity and provenance       | `AC-PLAN-001`, `AC-TRACE-001` | `SRC-001`, `CTX-001`   |
+| Track binding                      | `AC-SCOPE-001`                | `CTX-001`              |
+| Story set                          | `AC-TRACE-001`                | `DEL-001`, `DEL-002`   |
+| Dependency and eligibility model   | `AC-DAG-001`                  | `SEQ-001`, `FILE-001`  |
+| Done and evidence requirements     | `AC-EVID-001`                 | `VAL-001`              |
+| Authority and approval needs       | `AC-SCOPE-001`, `AC-STOP-001` | `STOP-001`             |
+| Policy and work-profile references | `AC-SCOPE-001`                | `CTX-001`              |
+| Stack-seam requirements            | `AC-SCOPE-001`                | `CTX-001`, `STOP-001`  |
+| Constraints and limits             | `AC-SCOPE-001`, `AC-STOP-001` | `STOP-001`, `STOP-002` |

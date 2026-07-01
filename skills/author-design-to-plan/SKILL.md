@@ -1,16 +1,16 @@
 ---
 name: author-design-to-plan
-description: Use to turn an approved technical-design handoff and Product PRD acceptance criteria into a reviewable, execution-ready plan in Jig's execution-plan-shape-v0. Accepts a technical-design artifact carrying handoff_contract:technical-design-handoff-v0, design_status:approved, and a complete Planner Handoff Summary, plus Product PRD acceptance-criteria IDs and track/policy/work-profile references. Stops and names the missing or conflicting source and its owner when required inputs are missing, unstable, or would force invented scope. Produces a plan document preserving Jig's required v0 properties (identity/provenance, track binding, story set, dependency graph, done/evidence requirements, authority/approval needs, policy/work-profile references, stack-seam requirements, constraints). Does not review or refine an existing plan after the fact — use review-plan for that.
+description: Use to turn an approved technical-design handoff and Product PRD acceptance criteria into a reviewable, execution-ready plan in Jig's execution-plan-shape-v0. The transformation is projection-only: it projects Product AC IDs and approved handoff facts into Jig plan properties without adding scope, package layout, model routing, or runtime behavior. Accepts a technical-design artifact carrying handoff_contract:technical-design-handoff-v0, design_status:approved, and a complete Planner Handoff Summary, plus Product PRD acceptance-criteria IDs and track/policy/work-profile references. Stops and names the missing or conflicting source, failing check, and owner when required inputs are missing, unstable, contradictory, or would force invented scope. Produces a plan document preserving Jig's required v0 properties (identity/provenance, track binding, story set, dependency graph, done/evidence requirements, authority/approval needs, policy/work-profile references, stack-seam requirements, constraints). Does not review or refine an existing plan after the fact — use review-plan for that.
 ---
 
 # author-design-to-plan
 
 Turn one approved technical-design handoff plus its Product PRD acceptance criteria into a plan
 Jig can schedule, run, and land. This skill runs the transformation in a single pass — ingest,
-validate, decompose, graph, evidence, traceability check, stop-or-emit — and never invents a
-product, design, or implementation decision that is not present in its inputs. Use `review-plan`
-afterward for an independent post-hoc check of the emitted plan's correctness, quality,
-decomposition, scoping, and coverage.
+validate, projection-only decomposition, graph reconciliation, evidence/predicate binding,
+traceability check, stop-or-emit — and never invents a product, design, or implementation decision
+that is not present in its inputs. Use `review-plan` afterward for an independent post-hoc check of
+the emitted plan's correctness, quality, decomposition, scoping, and coverage.
 
 ## Where this sits
 
@@ -57,8 +57,12 @@ If any precondition is unmet, do not guess at a substitute source — go to Step
 Assemble the Accepted Inputs (contract §Accepted Inputs): the Product PRD with acceptance-criteria
 IDs, the technical-design artifact's `Planner Handoff Summary` with stable fact IDs, Jig's current
 `execution-plan-shape-v0` properties, and the track's policy and work-profile references. Read
-methodology-specific sections (context maps, invariant matrices, ports/adapters tables) for context
-only — they are never the contract surface.
+enough of the handoff to capture the delivery (`DEL-*`), sequencing (`SEQ-*`), shared-surface
+(`FILE-*`), failure/degraded (`FAIL-*`), validation (`VAL-*`), and stop (`STOP-*`) facts the plan
+must preserve. Read methodology-specific sections (context maps, invariant matrices,
+ports/adapters tables) for context only — they are never the contract surface. Operand/value sources
+used later in the plan may come from any cited handoff fact category when the cited row actually
+authorizes that value.
 
 ### Step 2 — Validate the handoff (stop gate)
 
@@ -80,21 +84,35 @@ Check, in order:
 If any check fails, stop now — go to Step 7's stop path. Do not continue to Step 3 hoping a later
 step will compensate.
 
-### Step 3 — Decompose into a story set
+### Step 3 — Decompose into a projection-only story set
 
 Build stories from `DEL-*` facts and the Product ACs they preserve. Each story gets a stable ID,
 a concise title and intent, its source references (Product AC IDs and handoff fact IDs), and an
 expected scope boundary (files, components, capabilities, or behavior areas — not an invented
-package layout; `AC-SCOPE-001`).
+package layout; `AC-SCOPE-001`). The story set is a projection of supplied sources into plan
+organization. It may make scope reviewable, but it may not add scope, invent a runtime policy, or
+smuggle in implementation details the sources did not authorize.
 
-### Step 4 — Build the dependency and eligibility graph
+### Step 4 — Build the dependency and eligibility graph, then reconcile it
 
 Represent `SEQ-*` facts as an explicit graph: producer-before-consumer edges where a design fact
 states an ordering constraint, and independent stories where none exists. A story is not eligible
-until its declared prerequisites land — never merely started or self-reported complete. Hidden or
-contradictory dependencies are a stop condition (Step 7), not something to reconcile silently.
+until its declared prerequisites land — never merely started or self-reported complete.
 
-### Step 5 — Attach done and evidence requirements
+Then run whole-graph producer/source closure across the plan you are about to emit:
+
+- every dependency edge cites the `SEQ-*` fact or other source-backed upstream reason that requires
+  it;
+- every consumed shared surface from `FILE-*`, failure/degraded token from `FAIL-*`, or other
+  producer-owned input resolves to exactly one source story in the emitted plan or one
+  already-approved upstream artifact;
+- every consumer row names what it consumes, not just who it depends on.
+
+If a consumer has no matching producer/source row, the plan has a phantom consumer. If an edge has
+no cited source fact, it is an unsupported dependency edge. Either is a stop condition (Step 7),
+not something to reconcile silently.
+
+### Step 5 — Attach done and evidence requirements, and source every predicate
 
 For each story, state falsifiable evidence from `VAL-*` facts: automated checks (name the actual
 command or gate lane, e.g. `pnpm check`, a named test file, or a static rule), review requirements,
@@ -103,21 +121,28 @@ the Product AC and handoff fact it proves. An evidence item that only says "test
 correctly" without naming a command or gate lane is not falsifiable — treat it as a design gap and
 route to Step 7, not as accepted evidence.
 
+When a done-condition is relational or compound, decompose it until each predicate names the
+concrete source for every operand it evaluates. A citation to "the handoff", "policy", or
+"projection" is not enough if the plan is asserting a value-level relationship. An unsourced
+operand is a source gap and routes to Step 7.
+
 ### Step 6 — Run the traceability check
 
 Confirm every story traces `Product PRD AC ID -> Technical Design handoff fact ID -> Jig plan
 property` (contract §Traceability Rule). Confirm every in-scope Product AC is either covered by a
 story or explicitly marked out of scope with a source-backed reason. A reviewer must be able to
 answer, from the plan alone and without inferring hidden scope: which outcome requires this story,
-which facts authorize its boundary/sequencing/evidence/stop conditions, and which Jig properties
-carry those facts forward.
+which facts authorize its boundary/sequencing/evidence/stop conditions, which producer or upstream
+artifact closes every consumed source, and which Jig properties carry those facts forward.
 
 ### Step 7 — Stop or emit
 
 Stop and produce **no plan** — instead name the missing or conflicting source ID and the owner
 responsible for resolving it — when any condition in the contract's §Refusal and Stop Behavior
 holds, including any failure surfaced in Steps 2, 4, 5, or 6. A stop result is a complete, valid
-output of this skill; it is not a failure to work around.
+output of this skill; it is not a failure to work around. Name the failing check class as well
+(`input validity`, `whole-graph reconciliation`, `evidence binding`, `predicate sourcing`, or
+`traceability coverage`) so the caller can route the repair deliberately.
 
 Otherwise, emit a plan using `templates/plan-template.md`, preserving every property the contract's
 §Required Output Properties lists: plan identity and provenance, track binding, story set,
@@ -133,10 +158,16 @@ check in Step 6 is visible in the output, not just performed silently.
 
 - Inventing Product acceptance criteria, design facts, dependencies, evidence, or implementation
   package layout that are not present in the inputs (`AC-SCOPE-001`).
+- Treating projection-only planning as permission to invent extra scope because "it is just
+  organization" — organization is allowed only when it is a lossless reshaping of cited sources.
 - Treating methodology-specific prose (DDD context maps, invariant matrices, ports/adapters tables)
   as if it were the `Planner Handoff Summary` — only the summary's fact-ID tables are the contract
   surface; methodology detail is context only.
 - Emitting a plan when the handoff is blank, `TBD`, or only implied by prose instead of stopping.
+- Listing a consumer of a producer-owned surface or token without naming the consumed item and its
+  authoritative producer/source.
+- Accepting evidence that names no concrete gate, command, reviewer check, or artifact.
+- Letting a relational/compound done-condition pass with only one operand sourced.
 - Silently resolving a conflict between Product and Technical Design facts instead of naming it.
 - Freezing Jig's field names, nesting, or enums into a schema, validator, or TypeScript interface —
   this skill preserves named properties, not a frozen shape (see the design layer's D-002).

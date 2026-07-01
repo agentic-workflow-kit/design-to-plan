@@ -1,6 +1,6 @@
 ---
 name: review-plan
-description: Use to independently verify a plan produced by author-design-to-plan (or any plan claiming execution-plan-shape-v0 conformance) after it exists. Checks correctness against the design-to-plan contract's Required Output Properties and Review Checklist, plus decomposition, scoping, and coverage — sharpened by defect classes seen in prior plan-authoring generations (phantom-consumer dependencies, prose-only evidence, oversized stories, one-sided predicate sourcing). Produces a review-findings document with disposition-ready suggestions; never edits the plan directly.
+description: Use to independently verify a plan produced by author-design-to-plan (or any plan claiming execution-plan-shape-v0 conformance) after it exists. Checks correctness against the design-to-plan contract's Required Output Properties and Review Checklist, plus decomposition, scoping, and coverage — sharpened by defect classes seen in prior plan-authoring generations: phantom-consumer dependencies, unsupported dependency edges, prose-only evidence, missing producer/source closure, oversized stories, one-sided predicate sourcing, hidden implementation assumptions, and stop-condition drift. Produces a review-findings document with disposition-ready suggestions; never edits the plan directly.
 ---
 
 # Review a Jig-ready execution plan
@@ -19,12 +19,12 @@ verification without a blocking two-gate split.
 
 ## References (load before reviewing)
 
-| Reference                                       | Use for                                                                                                                                 |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `../../docs/design/design-to-plan-contract.md`  | Required Output Properties, Traceability Rule, Refusal and Stop Behavior, Review Checklist — the normative source for every check below |
-| The technical-design handoff being planned from | Ground truth for `DEL-*`, `SEQ-*`, `VAL-*`, `STOP-*` facts the plan claims to preserve                                                  |
-| The Product PRD being planned from              | Ground truth for the acceptance-criteria IDs the plan claims to cover                                                                   |
-| `templates/review-findings-template.md`         | Output skeleton                                                                                                                         |
+| Reference                                       | Use for                                                                                                                                                                                              |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../../docs/design/design-to-plan-contract.md`  | Required Output Properties, Traceability Rule, Refusal and Stop Behavior, Review Checklist — the normative source for every check below                                                              |
+| The technical-design handoff being planned from | Ground truth for `DEL-*`, `SEQ-*`, `FILE-*`, `FAIL-*`, `VAL-*`, and `STOP-*` facts the plan claims to preserve; operand/value sources may come from any cited fact row that actually authorizes them |
+| The Product PRD being planned from              | Ground truth for the acceptance-criteria IDs the plan claims to cover                                                                                                                                |
+| `templates/review-findings-template.md`         | Output skeleton                                                                                                                                                                                      |
 
 ## Preconditions
 
@@ -59,7 +59,8 @@ story with a citation that does not resolve to a real ID in the supplied PRD or 
 For every fact or dependency a story consumes (a `SEQ-*` edge, a shared file from `FILE-*`, a
 failure token from `FAIL-*`), confirm exactly one story or an already-approved upstream artifact
 produces it. Flag phantom-consumer edges — a dependency claimed by a consumer story with no
-producer anywhere in the plan or its declared upstream inputs.
+producer anywhere in the plan or its declared upstream inputs. Flag unsupported dependency edges —
+ordering edges present in the plan with no cited `SEQ-*` or equivalent source-backed reason.
 
 ### 4. Evidence-gate binding (`AC-EVID-001`)
 
@@ -72,7 +73,8 @@ artifact) — evidence that cannot be pointed at is not falsifiable.
 For any relational or compound done-condition (e.g., "X is inside Y", "A happens before B"),
 confirm both operands trace to a declared input, consumed event, or producer-owned field in the
 plan or its source facts. Flag conditions where only one operand is sourced and the other is
-assumed or invented.
+assumed or invented. Naming only an input category ("the handoff", "the policy", "the projection")
+is not operand sourcing.
 
 ### 6. Story sizing
 
@@ -88,13 +90,17 @@ cycle, and that independent stories are represented as such rather than serializ
 ### 8. Scope discipline (`AC-SCOPE-001`)
 
 Confirm the plan does not invent product scope, design facts, implementation package layout,
-policy semantics, or execution-host behavior beyond what the source handoff and PRD state.
+policy semantics, or execution-host behavior beyond what the source handoff and PRD state. The plan
+must remain projection-only: added tables or reviewer aids are acceptable only when they are
+lossless reorganizations of cited source facts rather than a new design layer.
 
-### 9. Stop-condition fidelity (`AC-STOP-001`)
+### 9. Stop-condition fidelity and drift (`AC-STOP-001`)
 
 If the plan itself documents a stop (rather than an emitted plan), confirm the stop names a
 specific missing or conflicting source ID and an owner responsible for resolving it — a stop that
 just says "inputs incomplete" without naming the source and owner does not satisfy the contract.
+If the plan emitted despite a whole-graph closure gap, prose-only evidence item, or unsourced
+operand that should have forced a stop, flag that as stop-condition drift.
 
 ## Output
 
@@ -102,7 +108,8 @@ Write findings using `templates/review-findings-template.md`: one entry per chec
 each naming the plan section, the violated requirement, and — where the fix is unambiguous — a
 suggested correction. Do not renumber or rewrite the plan's own IDs. Findings are proposals for the
 plan's author to disposition (accept, reject with reason, or defer), the same way `decisions.md`
-records a `Suggestion:` line without rewriting history.
+records a `Suggestion:` line without rewriting history. When a finding means the plan should have
+stopped instead of emitted, say that explicitly.
 
 If every check passes, say so explicitly and do not manufacture a finding to have something to
 report.
@@ -114,4 +121,6 @@ report.
 - Silently fixing the plan instead of writing a finding — this skill reviews, it does not author.
 - Flagging a genuinely independent story as a missing dependency, or vice versa, without checking
   the source `SEQ-*` facts first.
+- Allowing a plan to keep an unsupported dependency edge or phantom consumer because "the intent is
+  obvious".
 - Manufacturing findings when the plan is sound, to appear thorough.
