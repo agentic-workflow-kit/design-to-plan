@@ -1,7 +1,6 @@
 # design-to-plan
 
-> Turn an approved technical design into a reviewable, execution-ready plan — usable on its own, and
-> as the Planning layer of the agentic-workflow-kit suite.
+> Turn an approved technical design into a reviewable, execution-ready plan — usable on its own as an independent plugin, and as the Planning layer of the agentic-workflow-kit suite.
 
 ## Status
 

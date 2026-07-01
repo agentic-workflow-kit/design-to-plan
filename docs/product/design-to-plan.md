@@ -11,8 +11,7 @@ start, and what evidence proves it done, settled and reviewable _before_ any exe
 
 It is built to work **two ways**, and neither depends on the other:
 
-- **On its own** — point it at your own approved design and acceptance criteria and get a plan you
-  can review and hand to any executor. You supply the inputs; you consume the plan.
+- **On its own as an independent plugin** — point it at your own approved design and acceptance criteria and get a plan you can review and hand to any executor. You supply the inputs; you consume the plan.
 - **As the Planning layer of the [agentic-workflow-kit](https://github.com/agentic-workflow-kit)
   suite** — composing with `define-product` and `technical-design` upstream and `jig` downstream,
   which produce and consume its contracts for you. In the suite those layers are strong defaults,
