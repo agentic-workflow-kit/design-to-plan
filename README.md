@@ -1,6 +1,7 @@
 # design-to-plan
 
-> Planning-layer seed for turning approved technical designs into Jig-ready execution plans.
+> Turn an approved technical design into a reviewable, execution-ready plan — usable on its own, and
+> as the Planning layer of the agentic-workflow-kit suite.
 
 ## Status
 
