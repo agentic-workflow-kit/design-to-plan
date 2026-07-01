@@ -108,6 +108,7 @@ accepted inputs, required output properties, and stop behavior in the
 | AC-EVID-001  | Every story has falsifiable done/evidence requirements that cite the product and technical-design facts they prove.                                                                                                                                               | Active |
 | AC-TRACE-001 | Every story traces from one or more Product PRD acceptance-criteria IDs through one or more Technical Design handoff fact IDs to one or more Jig plan properties.                                                                                                 | Active |
 | AC-SCOPE-001 | The planner refuses to invent product acceptance criteria, technical-design facts, implementation package layout, policy semantics, or execution-host behavior not present in its inputs.                                                                         | Active |
+| AC-STOP-001  | When required inputs are missing, unstable, contradictory, or would force invented scope, the planner stops instead of producing or revising a plan and names the missing or conflicting source ID and the owner responsible for resolving it.                    | Active |
 
 ## When To Use It
 
@@ -193,8 +194,8 @@ Technical Design and Jig may cite:
 
 - this PRD title and path;
 - the Product Outcome and User Job summaries;
-- acceptance-criteria IDs `AC-PLAN-001`, `AC-DAG-001`, `AC-EVID-001`, `AC-TRACE-001`, and
-  `AC-SCOPE-001`;
+- acceptance-criteria IDs `AC-PLAN-001`, `AC-DAG-001`, `AC-EVID-001`, `AC-TRACE-001`,
+  `AC-SCOPE-001`, and `AC-STOP-001`;
 - the constraints, assumptions, and non-goals above.
 
 Downstream artifacts must not treat this PRD as a runtime contract, field-level plan schema, or

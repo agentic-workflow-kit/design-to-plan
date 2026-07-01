@@ -105,7 +105,8 @@ A design-to-plan output is acceptable when:
 
 This design contract satisfies the Design-to-plan PRD by preserving the Jig shape
 (`AC-PLAN-001`), dependency graph (`AC-DAG-001`), evidence requirements (`AC-EVID-001`),
-traceability (`AC-TRACE-001`), and refusal boundaries (`AC-SCOPE-001`).
+traceability (`AC-TRACE-001`), refusal boundaries (`AC-SCOPE-001`), and stop-and-attribute
+behavior (`AC-STOP-001`) via the Refusal and Stop Behavior section above.
 
 No conflict was found between this design contract and the current Product, Technical Design, or Jig
 contract docs.
