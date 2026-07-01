@@ -9,7 +9,7 @@ Documentation is organized by **altitude**: product (intent) above design (mecha
 
 | Layer                  | Owns                                       | Status |
 | ---------------------- | ------------------------------------------ | ------ |
-| [product/](./product/) | **What & why** — audience-facing intent.   | draft  |
+| [product/](./product/) | **What & why** — audience-facing intent.   | v0     |
 | [design/](./design/)   | **How** — mechanics, decisions, contracts. | draft  |
 
 Suite-level framing (how this repo relates to the other products in the lifecycle) lives at the

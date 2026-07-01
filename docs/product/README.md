@@ -1,6 +1,6 @@
 ---
 title: design-to-plan — product
-status: draft
+status: v0
 ---
 
 # design-to-plan — product
