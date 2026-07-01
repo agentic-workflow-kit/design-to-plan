@@ -6,7 +6,8 @@ status: illustrative
 # Minimal Design-to-plan Fixture
 
 This fixture is illustrative. It demonstrates traceability and shape preservation at design altitude;
-it is not a frozen JSON Schema, validator fixture, runtime command, or implementation package plan.
+it is not a frozen JSON Schema, validator fixture, runtime command, or implementation package plan. It
+walks the [`flows.md`](../flows.md) stages once against the [contract](../design-to-plan-contract.md).
 
 ## Input Summary
 

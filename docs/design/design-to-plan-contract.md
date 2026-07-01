@@ -9,6 +9,9 @@ This contract defines the Planning-layer transformation from an approved technic
 an execution-ready plan. It is a docs-level contract, not a runtime implementation, schema
 validator, CLI, prompt, package layout, or TypeScript interface.
 
+The lifecycle view of this transformation is [`flows.md`](flows.md); the design decisions behind it,
+each with its Product source, are in [`decisions.md`](decisions.md).
+
 ## Contract Posture
 
 Planning owns no new cross-repo seam. It consumes existing contracts and produces to Jig's current
@@ -23,6 +26,11 @@ v0 execution-plan shape:
 Jig's execution-plan contract is a v0 shape, not a frozen JSON Schema. Planning must preserve the
 required properties Jig names, but must not freeze exact field names, nesting, enums, validation
 language, or storage encoding from this seed.
+
+These contracts resolve to the Product PRD at [`../product/design-to-plan.md`](../product/design-to-plan.md),
+the Technical Design handoff at `technical-design/docs/design/technical-design-handoff-contract.md`,
+and Jig's plan shape at `jig/docs/design/contracts/execution-plan-contract-v0.md`. In the suite those
+sibling repos are present; on its own you supply artifacts in the same shapes.
 
 ## Accepted Inputs
 
@@ -104,10 +112,26 @@ A design-to-plan output is acceptable when:
 
 ## Product Reconciliation
 
-This design contract satisfies the Design-to-plan PRD by preserving the Jig shape
-(`AC-PLAN-001`), dependency graph (`AC-DAG-001`), evidence requirements (`AC-EVID-001`),
-traceability (`AC-TRACE-001`), refusal boundaries (`AC-SCOPE-001`), and stop-and-attribute
-behavior (`AC-STOP-001`) via the Refusal and Stop Behavior section above.
+Each Product acceptance criterion maps to the design surface that satisfies it:
+
+| Product AC     | Satisfied by                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| `AC-PLAN-001`  | [Required Output Properties](#required-output-properties) preserve every Jig plan property.             |
+| `AC-DAG-001`   | The dependency and eligibility row of Required Output Properties; [`flows.md`](flows.md) step 4.        |
+| `AC-EVID-001`  | The done and evidence row of Required Output Properties; [`flows.md`](flows.md) step 5.                 |
+| `AC-TRACE-001` | [Traceability Rule](#traceability-rule); the fixture [`examples/`](examples/minimal-design-to-plan.md). |
+| `AC-SCOPE-001` | [Refusal and Stop Behavior](#refusal-and-stop-behavior) (refuses to invent scope).                      |
+| `AC-STOP-001`  | [Refusal and Stop Behavior](#refusal-and-stop-behavior); [`flows.md`](flows.md) stop-or-emit.           |
+
+Consistency with the consumed and produced contracts is **verified, not assumed**, as of 2026-07-01:
+
+- Jig's output seam resolves — `jig/docs/design/contracts/execution-plan-contract-v0.md` exists and
+  is the shape the Required Output Properties preserve.
+- The Technical Design input seam matches — the id `technical-design-handoff-v0` and the handoff
+  fact-ID prefixes this contract relies on (`DEL-`, `SEQ-`, `VAL-`, `STOP-`) are defined in
+  `technical-design/docs/design/technical-design-handoff-contract.md`.
+- The Product AC IDs cited here match the six in [`../product/design-to-plan.md`](../product/design-to-plan.md).
 
 No conflict was found between this design contract and the current Product, Technical Design, or Jig
-contract docs.
+contract docs. If a future change to any of those contracts breaks one of the checks above, name the
+conflict and its owner here rather than silently reconciling.
