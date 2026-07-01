@@ -123,13 +123,15 @@ Each Product acceptance criterion maps to the design surface that satisfies it:
 | `AC-SCOPE-001` | [Refusal and Stop Behavior](#refusal-and-stop-behavior) (refuses to invent scope).                      |
 | `AC-STOP-001`  | [Refusal and Stop Behavior](#refusal-and-stop-behavior); [`flows.md`](flows.md) stop-or-emit.           |
 
-Consistency with the consumed and produced contracts is **verified, not assumed**, as of 2026-07-01:
+Suite seam references were **verified externally** against the current org repos on 2026-07-01. In a
+standalone checkout these are **external contract citations, not local files** — consumers supply
+artifacts in equivalent shapes. What was checked:
 
-- Jig's output seam resolves — `jig/docs/design/contracts/execution-plan-contract-v0.md` exists and
-  is the shape the Required Output Properties preserve.
-- The Technical Design input seam matches — the id `technical-design-handoff-v0` and the handoff
-  fact-ID prefixes this contract relies on (`DEL-`, `SEQ-`, `VAL-`, `STOP-`) are defined in
-  `technical-design/docs/design/technical-design-handoff-contract.md`.
+- Jig's output seam — `jig/docs/design/contracts/execution-plan-contract-v0.md` is the shape the
+  Required Output Properties preserve.
+- The Technical Design input seam — the id `technical-design-handoff-v0` and the handoff fact-ID
+  prefixes this contract and its fixture rely on (including `SRC-`, `CTX-`, `DEL-`, `SEQ-`, `VAL-`,
+  and `STOP-`) are defined in `technical-design/docs/design/technical-design-handoff-contract.md`.
 - The Product AC IDs cited here match the six in [`../product/design-to-plan.md`](../product/design-to-plan.md).
 
 No conflict was found between this design contract and the current Product, Technical Design, or Jig

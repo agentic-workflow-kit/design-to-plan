@@ -31,7 +31,7 @@ walks the [`flows.md`](../flows.md) stages once against the [contract](../design
 | DEL-001  | delivery planning | Create a contract story that maps accepted inputs to Jig plan properties.                                                                                                  |
 | DEL-002  | delivery planning | Create an example-fixture story that proves traceability from AC IDs to design facts to Jig properties.                                                                    |
 | SEQ-001  | sequencing        | The contract story must land before the fixture story because the fixture cites the contract's required mappings.                                                          |
-| VAL-001  | validation        | Evidence is `pnpm check`, `git diff --check`, and reviewer inspection of the traceability table.                                                                           |
+| VAL-001  | validation        | Evidence is the repo gate `pnpm check` and reviewer inspection of the traceability table.                                                                                  |
 | STOP-001 | stop condition    | Stop if any Product AC ID or required handoff fact is missing, blank, TBD, or only implied by prose.                                                                       |
 
 ## Illustrative Plan Shape
@@ -77,7 +77,7 @@ rules. No hidden independent story is present in this minimal fixture.
 | --------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | STORY-001 | Reviewer confirms accepted inputs, required outputs, and refusal behavior are named.            | `AC-SCOPE-001`, `AC-STOP-001`; `CTX-001`; `STOP-001`; Jig plan identity, story set, authority, policy, stack-seam, and constraint properties. |
 | STORY-002 | Reviewer confirms the table maps Product AC IDs to Technical Design fact IDs to Jig properties. | `AC-TRACE-001`; `DEL-002`; Jig provenance, story set, dependency graph, and done/evidence properties.                                         |
-| STORY-002 | `pnpm check` and `git diff --check` pass.                                                       | `AC-EVID-001`; `VAL-001`; expected automated-check evidence category.                                                                         |
+| STORY-002 | The repo gate `pnpm check` passes.                                                              | `AC-EVID-001`; `VAL-001`; expected automated-check evidence category.                                                                         |
 
 ### Authority and Approval Needs
 
@@ -91,7 +91,7 @@ rules. No hidden independent story is present in this minimal fixture.
 | Seam           | Required capability or source                                   |
 | -------------- | --------------------------------------------------------------- |
 | Agent          | Can preserve citations and stop on missing source facts.        |
-| Execution Host | Can run `pnpm check` and `git diff --check`.                    |
+| Execution Host | Can run the repo gate `pnpm check`.                             |
 | Forge          | Can expose PR review and check status.                          |
 | Work Source    | Product PRD and approved Technical Design handoff are readable. |
 
