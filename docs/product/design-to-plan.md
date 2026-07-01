@@ -1,9 +1,30 @@
 ---
-title: Design-to-plan PRD
+title: design-to-plan — product
 status: v0
 ---
 
-# Design-to-plan PRD
+# design-to-plan — product
+
+This is the product layer for **design-to-plan**, the Planning-layer seed of the
+[agentic-workflow-kit](https://github.com/agentic-workflow-kit) suite. It owns the product intent —
+_who it serves, what job it does, what it promises, and where its boundaries are_ — and is the
+contract the design layer reconciles to.
+
+This page is also the **Design-to-plan PRD**: the audience-facing overview above and the
+ID-bearing [Acceptance Criteria](#acceptance-criteria) below are one document. Product owns _what and
+why_; [`docs/design/`](../design/) owns _how_ those promises are met. Where they conflict, name it
+rather than silently resolving.
+
+## Product Spine
+
+| Question            | Product answer                                                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| User                | A repo owner or planning reviewer who has an approved technical design and needs a high-quality execution plan for Jig.                                          |
+| Job                 | Turn an approved design into a reviewable, Jig-ready execution plan without re-deciding product, design, or implementation scope.                                |
+| Current alternative | Hand-decomposing the design into stories by eye — hidden dependencies, plans that do not map to Jig's shape, and no line back to why each story exists.          |
+| Before              | The reviewer cannot tell which upstream fact justifies a story, what makes it eligible, what evidence proves it done, or where the planner guessed.              |
+| After               | The reviewer sees a plan whose every story traces from a Product acceptance criterion through a design fact to a Jig plan property — reviewable before Jig runs. |
+| Non-fit             | design-to-plan is not a runtime, CLI, validator, schema, or skill; it does not own Jig policy or re-decide product and design scope.                             |
 
 ## Product Outcome
 
@@ -20,6 +41,51 @@ what dependencies make it eligible, and what evidence will prove completion. The
 planner to stop when the inputs are incomplete rather than inventing missing product or design
 decisions.
 
+## Where It Sits In The Suite
+
+`agentic-workflow-kit` is a family of standalone, composable products across an agentic
+software-development lifecycle. Planning is the layer between an approved design and execution:
+
+```text
+PRODUCT ---------> DESIGN ----------> PLANNING --------> DELIVERY --------> LEARNING
+define / PRD       technical-design   design-to-plan     jig (run)          feedback loop
+```
+
+Planning **owns no new cross-repo seam**. It consumes existing contracts and produces to Jig's
+current execution-plan shape:
+
+| Direction | Contract                                      | Owner              |
+| --------- | --------------------------------------------- | ------------------ |
+| Input     | Product PRD and acceptance-criteria IDs       | `define-product`   |
+| Input     | `technical-design-handoff-v0` planner handoff | `technical-design` |
+| Output    | `execution-plan-shape-v0` plan properties     | `jig`              |
+
+The upstream layers are strong defaults that produce Planning's input, not parts of it. Planning's
+hard input boundary is an approved design handoff with stable fact IDs; its output boundary is Jig's
+v0 plan shape, which Planning must preserve but must not freeze into a field-level schema.
+
+## What It Does
+
+At product altitude, design-to-plan takes a **planning-ready input set** — a Product PRD with stable
+acceptance-criteria IDs, an approved technical design carrying a complete Planner Handoff Summary with
+stable fact IDs, Jig's current plan shape, and the track's policy and work-profile references — and
+produces a **reviewable execution plan**: plan identity and provenance, track binding, a story set,
+the dependency graph, done/evidence requirements, authority expectations, policy references,
+stack-seam requirements, and constraints.
+
+Every story earns its place through one traceability chain, so a reviewer never has to infer hidden
+scope:
+
+```text
+Product PRD AC ID -> Technical Design handoff fact ID -> Jig plan property
+```
+
+When the inputs cannot support that chain — missing acceptance-criteria IDs, a blank handoff summary,
+hidden or contradictory dependencies, unprovable evidence — Planning **stops and names the missing or
+conflicting source and its owner**, rather than inventing the decision. The design layer specifies the
+accepted inputs, required output properties, and stop behavior in the
+[design-to-plan contract](../design/design-to-plan-contract.md).
+
 ## Acceptance Criteria
 
 | ID           | Criterion                                                                                                                                                                                                                                                         | Status |
@@ -29,6 +95,25 @@ decisions.
 | AC-EVID-001  | Every story has falsifiable done/evidence requirements that cite the product and technical-design facts they prove.                                                                                                                                               | Active |
 | AC-TRACE-001 | Every story traces from one or more Product PRD acceptance-criteria IDs through one or more Technical Design handoff fact IDs to one or more Jig plan properties.                                                                                                 | Active |
 | AC-SCOPE-001 | The planner refuses to invent product acceptance criteria, technical-design facts, implementation package layout, policy semantics, or execution-host behavior not present in its inputs.                                                                         | Active |
+
+## When To Use It
+
+- You have an **approved technical design** with a complete Planner Handoff Summary and stable fact
+  IDs, and you need the Jig-ready execution plan that turns it into runnable work.
+- You want story dependencies, evidence requirements, and stop conditions made **explicit and
+  reviewable** before any execution starts.
+- You want every story to **trace back** to the product outcome and design fact that justify it.
+- You want the planner to **refuse and name what is missing** rather than guess when inputs are
+  incomplete.
+
+## When Not To Use It
+
+- You do not yet have an approved design — resolve the product and design layers first
+  (`define-product`, then `technical-design`); Planning has nothing valid to consume without them.
+- You want a runtime, CLI, validator, schema package, or skill — this seed is a docs-level contract
+  and ships none of those.
+- You want to change Jig policy semantics, work-profile realization, or execution-host behavior, or to
+  re-decide product or design scope — those are owned upstream and downstream, not here.
 
 ## Constraints
 
@@ -62,6 +147,31 @@ decisions.
   missing or blank.
 - Choosing implementation package layout, story decomposition internals, or code ownership for a
   future runtime.
+
+## Success And Counter-Signals
+
+**Success looks like:**
+
+- A reviewer can explain, from the plan alone, why each story exists, what makes it eligible, and what
+  evidence will prove it done.
+- Plans map cleanly onto Jig's shape, so execution starts without re-litigating scope.
+- The planner stops on incomplete inputs and names the owner who must resolve the gap.
+
+**Counter-signals look like:**
+
+- Stories appear with no traceable product or design justification.
+- Hidden or contradictory dependencies surface only once Jig is running.
+- The planner invents missing product scope, design facts, or implementation structure to fill a gap.
+- This seed grows a schema, validator, or runtime that freezes Jig's field-level plan shape.
+
+## Open Questions
+
+- How much of Planning eventually becomes a skill or runtime, and how much stays a docs-level contract
+  the owner applies by hand.
+- How Planning tracks Jig's `execution-plan-shape-v0` as it evolves, without freezing field-level
+  detail from this seed.
+- Whether the traceability format (`AC ID -> fact ID -> Jig property`) should harden into a checkable
+  artifact later, and which layer would own that check.
 
 ## Downstream Citation Map
 
