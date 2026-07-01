@@ -6,7 +6,7 @@ status: v0
 # Design-to-plan Contract
 
 This contract defines the Planning-layer transformation from an approved technical-design handoff to
-a Jig-ready execution plan. It is a docs-level contract, not a runtime implementation, schema
+an execution-ready plan. It is a docs-level contract, not a runtime implementation, schema
 validator, CLI, prompt, package layout, or TypeScript interface.
 
 ## Contract Posture
@@ -86,7 +86,8 @@ Planning stops instead of producing or revising a plan when any of these conditi
   semantics, model routing, execution-host behavior, or implementation details not present in the
   inputs.
 
-The stop result should name the missing or conflicting source ID and the owner that must resolve it.
+The stop result must name the missing or conflicting source ID and the owner that must resolve it,
+as `AC-STOP-001` requires.
 
 ## Review Checklist
 
@@ -105,7 +106,8 @@ A design-to-plan output is acceptable when:
 
 This design contract satisfies the Design-to-plan PRD by preserving the Jig shape
 (`AC-PLAN-001`), dependency graph (`AC-DAG-001`), evidence requirements (`AC-EVID-001`),
-traceability (`AC-TRACE-001`), and refusal boundaries (`AC-SCOPE-001`).
+traceability (`AC-TRACE-001`), refusal boundaries (`AC-SCOPE-001`), and stop-and-attribute
+behavior (`AC-STOP-001`) via the Refusal and Stop Behavior section above.
 
 No conflict was found between this design contract and the current Product, Technical Design, or Jig
 contract docs.

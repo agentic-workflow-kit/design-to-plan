@@ -1,6 +1,7 @@
 # design-to-plan
 
-> Planning-layer seed for turning approved technical designs into Jig-ready execution plans.
+> Turn an approved technical design into a reviewable, execution-ready plan — usable on its own, and
+> as the Planning layer of the agentic-workflow-kit suite.
 
 ## Status
 
@@ -28,13 +29,14 @@ pnpm check
 [`jig`](https://github.com/agentic-workflow-kit/jig):
 
 ```text
-PRODUCT ---------> DESIGN ----------> PLANNING --------> DELIVERY
-define / PRD       technical-design   design-to-plan     jig (run)
+PRODUCT ---------> DESIGN ----------> PLANNING --------> DELIVERY --------> LEARNING
+define / PRD       technical-design   design-to-plan     jig (run)          feedback loop
 ```
 
 Planning owns no upstream product or design decision. It consumes Product PRD/acceptance-criteria
 IDs and the Technical Design handoff contract, then produces to Jig's execution-plan contract
-shape.
+shape. Those upstream and downstream tools are strong defaults, not prerequisites — design-to-plan
+is usable on its own, supplying the inputs and consuming the plan yourself.
 
 ## License
 
