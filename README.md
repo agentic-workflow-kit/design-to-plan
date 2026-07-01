@@ -6,7 +6,7 @@
 ## Status
 
 Defines product and design contracts for the Planning layer, and implements the transformation as
-two skills: [`skills/author-plan/`](skills/author-plan/) (technical-design handoff + Product PRD ->
+two skills: [`skills/author-design-to-plan/`](skills/author-design-to-plan/) (technical-design handoff + Product PRD ->
 Jig-ready plan) and [`skills/review-plan/`](skills/review-plan/) (independent post-hoc plan review).
 It does not ship a runtime, CLI, validator, schema package, or eval harness — see
 [`docs/design/decisions.md`](docs/design/decisions.md), D-009.

@@ -1,21 +1,18 @@
 ---
 name: review-plan
-description: Use to independently verify a plan produced by author-plan (or any plan claiming execution-plan-shape-v0 conformance) after it exists. Checks correctness against the design-to-plan contract's Required Output Properties and Review Checklist, plus decomposition, scoping, and coverage — sharpened by defect classes seen in prior plan-authoring generations (phantom-consumer dependencies, prose-only evidence, oversized stories, one-sided predicate sourcing). Produces a review-findings document with disposition-ready suggestions; never edits the plan directly.
-argument-hint: "[plan path] [technical-design path] [product PRD path]"
-arguments: plan_path_technical_design_path_product_prd_path
-user-invocable: true
+description: Use to independently verify a plan produced by author-design-to-plan (or any plan claiming execution-plan-shape-v0 conformance) after it exists. Checks correctness against the design-to-plan contract's Required Output Properties and Review Checklist, plus decomposition, scoping, and coverage — sharpened by defect classes seen in prior plan-authoring generations (phantom-consumer dependencies, prose-only evidence, oversized stories, one-sided predicate sourcing). Produces a review-findings document with disposition-ready suggestions; never edits the plan directly.
 ---
 
 # Review a Jig-ready execution plan
 
-Independently verify a plan that already exists — either `author-plan`'s output or any document
+Independently verify a plan that already exists — either `author-design-to-plan`'s output or any document
 claiming `execution-plan-shape-v0` conformance. This is a post-hoc check: it runs after the plan is
 drafted, not as a pre-freeze gate. It never rewrites the plan; it appends findings for the plan's
 author (or the calling user) to disposition.
 
 ## Where this sits
 
-Runs after `author-plan` in the same Planning layer. It replaces having a separate pre-freeze
+Runs after `author-design-to-plan` in the same Planning layer. It replaces having a separate pre-freeze
 "frame" characterization stage — the same reconciliation checks a frame gate would run are
 performed here, against the plan as emitted, so a single skill covers both authoring and
 verification without a blocking two-gate split.
@@ -31,7 +28,7 @@ verification without a blocking two-gate split.
 
 ## Preconditions
 
-- A plan document exists (from `author-plan` or elsewhere) that claims to preserve
+- A plan document exists (from `author-design-to-plan` or elsewhere) that claims to preserve
   `execution-plan-shape-v0` properties.
 - The technical-design handoff and Product PRD the plan claims to derive from are available for
   cross-checking — reviewing a plan against facts you cannot see produces unverifiable findings.

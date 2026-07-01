@@ -118,7 +118,7 @@ Status legend: `applied`, `open-deferred`, `rejected`.
   matrices. The durable output is this design layer (contract, flows, decisions, fixture).
 - **Status:** applied
 
-## D-009 - Supersede D-001's "no skill" clause; build author-plan and review-plan skills
+## D-009 - Supersede D-001's "no skill" clause; build author-design-to-plan and review-plan skills
 
 - **Date:** 2026-07-01
 - **Driver:** Owner direction: `jig` is confirmed runtime-only and owns no planning logic
@@ -132,7 +132,7 @@ Status legend: `applied`, `open-deferred`, `rejected`.
   with no repeatable guardrails. A skill that implements the contract's own stages, refusal
   behavior, and traceability rule verbatim keeps the transformation auditable against the same
   contract, rather than moving it to an unreviewed ad hoc process.
-- **Consequence:** Adds `skills/author-plan/` (single-pass: ingest, validate, decompose, graph,
+- **Consequence:** Adds `skills/author-design-to-plan/` (single-pass: ingest, validate, decompose, graph,
   evidence, traceability check, stop-or-emit) and `skills/review-plan/` (independent, post-hoc
   verification of an emitted plan's correctness, decomposition, scoping, and coverage). This
   supersedes only the "skill" clause of D-001 — D-002 (preserve Jig's plan shape as properties, not

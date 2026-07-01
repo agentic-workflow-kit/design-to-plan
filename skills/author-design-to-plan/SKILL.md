@@ -1,12 +1,9 @@
 ---
-name: author-plan
-description: Use to turn an approved technical-design handoff and Product PRD acceptance criteria into a reviewable, execution-ready plan in Jig's execution-plan-shape-v0. Accepts a technical-design artifact carrying handoff_contract:technical-design-handoff-v0 with a complete Planner Handoff Summary, plus Product PRD acceptance-criteria IDs. Stops and names the missing or conflicting source and its owner when required inputs are missing, unstable, or would force invented scope. Produces a plan document preserving Jig's required v0 properties (identity/provenance, track binding, story set, dependency graph, done/evidence requirements, authority/approval needs, policy/work-profile references, stack-seam requirements, constraints). Does not review or refine an existing plan after the fact — use review-plan for that.
-argument-hint: "[technical-design path] [product PRD path]"
-arguments: technical_design_path_product_prd_path
-user-invocable: true
+name: author-design-to-plan
+description: Use to turn an approved technical-design handoff and Product PRD acceptance criteria into a reviewable, execution-ready plan in Jig's execution-plan-shape-v0. Accepts a technical-design artifact carrying handoff_contract:technical-design-handoff-v0, design_status:approved, and a complete Planner Handoff Summary, plus Product PRD acceptance-criteria IDs and track/policy/work-profile references. Stops and names the missing or conflicting source and its owner when required inputs are missing, unstable, or would force invented scope. Produces a plan document preserving Jig's required v0 properties (identity/provenance, track binding, story set, dependency graph, done/evidence requirements, authority/approval needs, policy/work-profile references, stack-seam requirements, constraints). Does not review or refine an existing plan after the fact — use review-plan for that.
 ---
 
-# Author a Jig-ready execution plan
+# author-design-to-plan
 
 Turn one approved technical-design handoff plus its Product PRD acceptance criteria into a plan
 Jig can schedule, run, and land. This skill runs the transformation in a single pass — ingest,
@@ -19,7 +16,7 @@ decomposition, scoping, and coverage.
 
 ```text
 PRODUCT ---------> DESIGN ----------> PLANNING --------> DELIVERY --------> LEARNING
-define-product     technical-design   author-plan        jig (run)          feedback loop
+define-product     technical-design   author-design-to-plan        jig (run)          feedback loop
                                       (this skill)
 ```
 
@@ -40,10 +37,14 @@ standalone, the caller supplies equivalent artifacts in the same shapes.
 
 ## Preconditions
 
-- A technical-design artifact is available whose frontmatter includes `handoff_contract:
-technical-design-handoff-v0` and a `design_status` eligible for planning (not `draft` or
-  `superseded`).
+- A technical-design artifact is available whose frontmatter includes
+  `handoff_contract: technical-design-handoff-v0` and `design_status: approved` — or an explicitly
+  documented planning-approved equivalent the caller names up front. `draft`, `reviewed`, and
+  `superseded` are not planning-ready; "reviewed" means review happened, not that planning is
+  authorized.
 - A Product PRD or equivalent artifact with stable acceptance-criteria IDs is available.
+- Track identity plus policy and work-profile references are available (contract §Accepted
+  Inputs) — Planning does not invent a track binding when these are absent.
 - The caller has not already asked for a runtime, CLI, schema, or validator — this skill produces
   a plan document only.
 
@@ -65,11 +66,16 @@ Check, in order:
 
 - required frontmatter (`design_id`, `handoff_contract: technical-design-handoff-v0`,
   `design_status`, `round`) is present and consistent with the Handoff Identity section;
-- the design is approved for planning (not `draft` or `superseded` without a replacement);
+- `design_status` is exactly `approved` — or an equivalent the caller documented as
+  planning-approved in Step 1. The handoff contract's statuses are ordered (`draft`, `reviewed`,
+  `approved`, `superseded`); `reviewed` alone does not authorize planning, and `draft` or
+  `superseded` never do;
 - the `Planner Handoff Summary` is present and non-blank — no section may read "TBD", be a blank
   table, or merely restate methodology prose without a fact ID;
 - Product acceptance-criteria IDs referenced by the handoff's `SRC-*` facts are themselves stable
-  and resolvable.
+  and resolvable;
+- track identity, a policy reference, and a work-profile reference are all present — a plan cannot
+  bind to a track it was not given, and the template must never placeholder these into existence.
 
 If any check fails, stop now — go to Step 7's stop path. Do not continue to Step 3 hoping a later
 step will compensate.
@@ -116,9 +122,12 @@ output of this skill; it is not a failure to work around.
 Otherwise, emit a plan using `templates/plan-template.md`, preserving every property the contract's
 §Required Output Properties lists: plan identity and provenance, track binding, story set,
 dependency and eligibility model, done and evidence requirements, authority and approval needs,
-policy and work-profile references, stack-seam requirements, and constraints and limits. Include
-the per-story and per-property traceability tables so the check in Step 6 is visible in the output,
-not just performed silently.
+policy and work-profile references, stack-seam requirements, and constraints and limits. Plan
+identity and provenance must name the Product PRD's contract/status, the Technical Design handoff's
+`handoff_contract` and `design_status`, the Jig `execution-plan-shape-v0` reference, and source
+artifact paths/versions when available — so Jig can reject an incompatible or stale plan by
+inspection rather than guessing. Include the per-story and per-property traceability tables so the
+check in Step 6 is visible in the output, not just performed silently.
 
 ## Anti-patterns
 

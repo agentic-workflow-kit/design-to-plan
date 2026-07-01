@@ -9,6 +9,10 @@ This fixture is illustrative. It demonstrates traceability and shape preservatio
 it is not a frozen JSON Schema, validator fixture, runtime command, or implementation package plan. It
 walks the [`flows.md`](../flows.md) stages once against the [contract](../design-to-plan-contract.md).
 
+The plan below predates the `author-design-to-plan`/`review-plan` skills (D-009) and describes a docs-only
+authoring story; its Constraints section reflects that specific story's own scope, not a claim that
+this repo ships no skill.
+
 ## Input Summary
 
 ### Product PRD References

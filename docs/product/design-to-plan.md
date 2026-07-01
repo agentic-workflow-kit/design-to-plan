@@ -33,7 +33,7 @@ than silently resolving.
 | Current alternative | Hand-decomposing the design into stories by eye — hidden dependencies, plans that do not map to the execution-plan shape, and no line back to why each story exists.              |
 | Before              | The reviewer cannot tell which upstream fact justifies a story, what makes it eligible, what evidence proves it done, or where the planner guessed.                               |
 | After               | The reviewer sees a plan whose every story traces from a Product acceptance criterion through a design fact to an execution-plan property — reviewable before any execution runs. |
-| Non-fit             | design-to-plan is not a runtime, CLI, validator, schema, or skill; it does not own Jig policy or re-decide product and design scope.                                              |
+| Non-fit             | design-to-plan is not a runtime, CLI, validator, or schema; it does not own Jig policy or re-decide product and design scope.                                                     |
 
 ## Product Outcome
 
@@ -126,7 +126,7 @@ accepted inputs, required output properties, and stop behavior in the
   The suite's `define-product` and `technical-design` are the default path, but any equivalent
   artifacts in the expected shapes work; Planning has nothing valid to consume without them.
 - You want a runtime, CLI, validator, schema package, or eval harness — this repo ships none of
-  those. It does ship a Planning skill (`skills/author-plan`, `skills/review-plan`) that performs
+  those. It does ship a Planning skill (`skills/author-design-to-plan`, `skills/review-plan`) that performs
   the transformation this contract specifies.
 - You want to change Jig policy semantics, work-profile realization, or execution-host behavior, or to
   re-decide product or design scope — those are owned upstream and downstream, not here.
@@ -183,8 +183,8 @@ accepted inputs, required output properties, and stop behavior in the
 
 ## Open Questions
 
-- How much of Planning eventually becomes a skill or runtime, and how much stays a docs-level contract
-  the owner applies by hand.
+- Whether Planning eventually needs a runtime (beyond the `author-design-to-plan`/`review-plan` skills already
+  shipped per D-009), and how much stays a docs-level contract the owner applies by hand.
 - How Planning tracks Jig's `execution-plan-shape-v0` as it evolves, without freezing field-level
   detail from this seed.
 - Whether the traceability format (`AC ID -> fact ID -> Jig property`) should harden into a checkable

@@ -11,14 +11,22 @@ every property below is present and populated.
 
 ## Plan Identity and Provenance
 
-| Property             | Value                                                    |
-| -------------------- | -------------------------------------------------------- |
-| Plan ID              | `<stable-plan-id>`                                       |
-| Plan version posture | `execution-plan-shape-v0`                                |
-| Producer             | `<who/what authored this plan>`                          |
-| Track                | `<track-id>`                                             |
-| Product refs         | `<Product PRD acceptance-criteria IDs this plan covers>` |
-| Design refs          | `<Technical Design handoff fact IDs this plan covers>`   |
+| Property                          | Value                                                                                                                       |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Plan ID                           | `<stable-plan-id>`                                                                                                          |
+| Plan version posture              | `execution-plan-shape-v0`                                                                                                   |
+| Producer                          | `<who/what authored this plan>`                                                                                             |
+| Track                             | `<track-id>`                                                                                                                |
+| Product refs                      | `<Product PRD acceptance-criteria IDs this plan covers>`                                                                    |
+| Design refs                       | `<Technical Design handoff fact IDs this plan covers>`                                                                      |
+| Product artifact and contract     | `<Product PRD path>`, status `<design_status-equivalent>`                                                                   |
+| Technical Design handoff contract | `<technical-design artifact path>`, `handoff_contract: technical-design-handoff-v0`, `design_status: approved`, round `<N>` |
+| Jig execution-plan shape contract | `execution-plan-shape-v0` — `jig/docs/design/contracts/execution-plan-contract-v0.md` or a caller-supplied equivalent       |
+| Source artifact refs              | `<repo/path@commit or version for each source artifact above, when available>`                                              |
+
+Jig rejects a plan whose input version or compatibility marker it does not recognize rather than
+guessing — this row set is what lets it do that instead of silently accepting a stale or
+incompatible plan.
 
 ## Track Binding
 

@@ -20,7 +20,7 @@ design reconciles to; where they conflict, name it rather than silently resolvin
 | How it works (mechanics, decisions, contracts) | `docs/design/`  |
 | The planning transformation itself (skills)    | `skills/`       |
 
-`skills/author-plan` and `skills/review-plan` implement the transformation this repo owns (see
+`skills/author-design-to-plan` and `skills/review-plan` implement the transformation this repo owns (see
 `docs/design/decisions.md`, D-009). There is intentionally still no schema package, validator,
 CLI, runtime package, or eval harness in this repo — those remain out of scope (D-002, D-006).
 
