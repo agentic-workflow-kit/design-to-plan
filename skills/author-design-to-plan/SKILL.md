@@ -101,7 +101,8 @@ until its declared prerequisites land — never merely started or self-reported 
 
 Then run whole-graph producer/source closure across the plan you are about to emit:
 
-- every dependency edge cites the `SEQ-*` fact that requires it;
+- every dependency edge cites the `SEQ-*` fact or other source-backed upstream reason that requires
+  it;
 - every consumed shared surface from `FILE-*`, failure/degraded token from `FAIL-*`, or other
   producer-owned input resolves to exactly one source story in the emitted plan or one
   already-approved upstream artifact;

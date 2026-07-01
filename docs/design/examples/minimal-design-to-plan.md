@@ -126,14 +126,14 @@ rules. No hidden independent story is present in this minimal fixture.
 
 ## Traceability Check Against Jig v0 Shape
 
-| Jig plan property                  | Product refs                  | Design refs           |
-| ---------------------------------- | ----------------------------- | --------------------- |
-| Plan identity and provenance       | `AC-PLAN-001`, `AC-TRACE-001` | `SRC-001`, `CTX-001`  |
-| Track binding                      | `AC-SCOPE-001`                | `CTX-001`             |
-| Story set                          | `AC-TRACE-001`                | `DEL-001`, `DEL-002`  |
-| Dependency and eligibility model   | `AC-DAG-001`                  | `SEQ-001`             |
-| Done and evidence requirements     | `AC-EVID-001`                 | `VAL-001`             |
-| Authority and approval needs       | `AC-SCOPE-001`, `AC-STOP-001` | `STOP-001`            |
-| Policy and work-profile references | `AC-SCOPE-001`                | `CTX-001`             |
-| Stack-seam requirements            | `AC-SCOPE-001`                | `CTX-001`, `STOP-001` |
-| Constraints and limits             | `AC-SCOPE-001`                | `STOP-001`            |
+| Jig plan property                  | Product refs                  | Design refs            |
+| ---------------------------------- | ----------------------------- | ---------------------- |
+| Plan identity and provenance       | `AC-PLAN-001`, `AC-TRACE-001` | `SRC-001`, `CTX-001`   |
+| Track binding                      | `AC-SCOPE-001`                | `CTX-001`              |
+| Story set                          | `AC-TRACE-001`                | `DEL-001`, `DEL-002`   |
+| Dependency and eligibility model   | `AC-DAG-001`                  | `SEQ-001`, `FILE-001`  |
+| Done and evidence requirements     | `AC-EVID-001`                 | `VAL-001`              |
+| Authority and approval needs       | `AC-SCOPE-001`, `AC-STOP-001` | `STOP-001`             |
+| Policy and work-profile references | `AC-SCOPE-001`                | `CTX-001`              |
+| Stack-seam requirements            | `AC-SCOPE-001`                | `CTX-001`, `STOP-001`  |
+| Constraints and limits             | `AC-SCOPE-001`, `AC-STOP-001` | `STOP-001`, `STOP-002` |

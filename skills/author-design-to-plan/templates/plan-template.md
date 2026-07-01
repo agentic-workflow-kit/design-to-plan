@@ -48,8 +48,8 @@ incompatible plan.
 <STORY-A -> STORY-B, or "no dependency" for independent stories>
 ```
 
-State, for every non-trivial edge, which `SEQ-*` fact requires it. A story is not eligible until
-its declared prerequisites have landed.
+State, for every non-trivial edge, which `SEQ-*` fact or other source-backed upstream reason
+requires it. A story is not eligible until its declared prerequisites have landed.
 
 ### Whole-Graph Reconciliation
 

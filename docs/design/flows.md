@@ -48,10 +48,11 @@ Each stage names the acceptance criterion and contract section it satisfies.
    behavior, or net-new scope (`AC-SCOPE-001`).
 
 4. **Build the dependency and eligibility graph, then reconcile it.** Represent producer-before-consumer
-   constraints and independent stories explicitly from `SEQ-*` facts, then reconcile every consumed
-   shared surface (`FILE-*`), failure/degraded token (`FAIL-*`), and producer-owned input to exactly one
-   source story or already-approved upstream artifact. Hidden dependencies, phantom consumers, or
-   unsupported dependency edges are review-blocking and route to stop (`AC-DAG-001`).
+   constraints and independent stories explicitly from `SEQ-*` facts and any other approved
+   source-backed ordering reasons, then reconcile every consumed shared surface (`FILE-*`),
+   failure/degraded token (`FAIL-*`), and producer-owned input to exactly one source story or
+   already-approved upstream artifact. Hidden dependencies, phantom consumers, or unsupported
+   dependency edges are review-blocking and route to stop (`AC-DAG-001`).
 
 5. **Attach done / evidence requirements and source every predicate.** Give each story falsifiable
    evidence — concrete commands, named gates, reviewer checks, or preserved artifacts — that cites the
