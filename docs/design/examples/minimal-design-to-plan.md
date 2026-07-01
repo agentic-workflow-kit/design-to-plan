@@ -101,8 +101,9 @@ rules. No hidden independent story is present in this minimal fixture.
 
 ### Constraints and Limits
 
-- Docs-only changes.
-- No schema, validator, CLI, runtime package, `src/`, skills, eval harness, or implementation package
+- Docs-only changes for this story (it authors the contract and fixture, not a skill — skills
+  landed in a later story; see the predates-D-009 note above).
+- No schema, validator, CLI, runtime package, `src/`, eval harness, or implementation package
   decomposition.
 - Stop rather than invent Product AC IDs, design fact IDs, policy semantics, or Jig runtime behavior.
 

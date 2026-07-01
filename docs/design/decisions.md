@@ -89,6 +89,8 @@ Status legend: `applied`, `open-deferred`, `rejected`.
   design-layer gate is the contract's Review Checklist plus `pnpm check`, i.e. manual review, not a
   code enforcement rule.
 - **Status:** open-deferred
+- **Suggestion:** The "skill" half of this question is resolved by D-009 — skill: yes, now
+  (`author-design-to-plan` + `review-plan`). The runtime/validator/eval-harness half stays deferred.
 
 ## D-007 - Mirror the product single-hub house pattern; design owns "how" and reconciles to product
 
