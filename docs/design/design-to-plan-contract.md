@@ -86,7 +86,8 @@ Planning stops instead of producing or revising a plan when any of these conditi
   semantics, model routing, execution-host behavior, or implementation details not present in the
   inputs.
 
-The stop result should name the missing or conflicting source ID and the owner that must resolve it.
+The stop result must name the missing or conflicting source ID and the owner that must resolve it,
+as `AC-STOP-001` requires.
 
 ## Review Checklist
 
