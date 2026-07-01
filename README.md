@@ -5,8 +5,11 @@
 
 ## Status
 
-Seeded docs-only repo. It defines product and design contracts for the Planning layer; it does not
-ship a runtime, CLI, validator, schema package, skill pack, or implementation planner.
+Defines product and design contracts for the Planning layer, and implements the transformation as
+two skills: [`skills/author-plan/`](skills/author-plan/) (technical-design handoff + Product PRD ->
+Jig-ready plan) and [`skills/review-plan/`](skills/review-plan/) (independent post-hoc plan review).
+It does not ship a runtime, CLI, validator, schema package, or eval harness — see
+[`docs/design/decisions.md`](docs/design/decisions.md), D-009.
 
 ## Development
 
@@ -21,6 +24,7 @@ pnpm check
 
 - [`docs/product/`](docs/product/) — what & why (audience-facing).
 - [`docs/design/`](docs/design/) — how (mechanics, decisions, contracts).
+- [`skills/`](skills/) — the planning transformation itself.
 
 ## Relationship to the suite
 

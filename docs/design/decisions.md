@@ -117,3 +117,28 @@ Status legend: `applied`, `open-deferred`, `rejected`.
   `handoff_contract` frontmatter, Planner Handoff Summary, context/aggregate maps, or invariant/state
   matrices. The durable output is this design layer (contract, flows, decisions, fixture).
 - **Status:** applied
+
+## D-009 - Supersede D-001's "no skill" clause; build author-plan and review-plan skills
+
+- **Date:** 2026-07-01
+- **Driver:** Owner direction: `jig` is confirmed runtime-only and owns no planning logic
+  (`jig/AGENTS.md`: it "takes an approved execution plan plus a policy and turns it into reviewed,
+  landed work"). design-to-plan is therefore the only layer that can own the input-to-plan
+  transformation this contract specifies. This resolves D-006's deferred open question ("how much
+  of Planning eventually becomes a skill or runtime") in favor of a skill, now.
+- **Decision:** accepted
+- **Rationale:** A docs-level contract with no executable transformation cannot itself turn an
+  approved design into a plan; someone still has to perform the seven `flows.md` stages by hand
+  with no repeatable guardrails. A skill that implements the contract's own stages, refusal
+  behavior, and traceability rule verbatim keeps the transformation auditable against the same
+  contract, rather than moving it to an unreviewed ad hoc process.
+- **Consequence:** Adds `skills/author-plan/` (single-pass: ingest, validate, decompose, graph,
+  evidence, traceability check, stop-or-emit) and `skills/review-plan/` (independent, post-hoc
+  verification of an emitted plan's correctness, decomposition, scoping, and coverage). This
+  supersedes only the "skill" clause of D-001 — D-002 (preserve Jig's plan shape as properties, not
+  a frozen schema) stays binding and unaffected. D-006's deferral continues to apply to a schema,
+  validator, CLI, runtime package, and eval/fixture harness: all remain out of scope. `AGENTS.md`,
+  `README.md`, `docs/design/README.md`, and `docs/product/design-to-plan.md`'s Non-Goals and
+  When-Not-To-Use sections are updated to carve "skill" out of their "no skill" language
+  accordingly, rather than leaving those pages self-contradictory.
+- **Status:** applied

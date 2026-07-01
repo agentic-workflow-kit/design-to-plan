@@ -125,8 +125,9 @@ accepted inputs, required output properties, and stop behavior in the
 - You do not yet have an approved design and acceptance criteria to plan from — produce those first.
   The suite's `define-product` and `technical-design` are the default path, but any equivalent
   artifacts in the expected shapes work; Planning has nothing valid to consume without them.
-- You want a runtime, CLI, validator, schema package, or skill — this seed is a docs-level contract
-  and ships none of those.
+- You want a runtime, CLI, validator, schema package, or eval harness — this repo ships none of
+  those. It does ship a Planning skill (`skills/author-plan`, `skills/review-plan`) that performs
+  the transformation this contract specifies.
 - You want to change Jig policy semantics, work-profile realization, or execution-host behavior, or to
   re-decide product or design scope — those are owned upstream and downstream, not here.
 
@@ -154,8 +155,9 @@ accepted inputs, required output properties, and stop behavior in the
 
 ## Non-Goals
 
-- Designing or implementing a Planning runtime, CLI, skill, eval harness, validator, schema package,
-  or prompt system.
+- Designing or implementing a Planning runtime, CLI, eval harness, validator, schema package, or
+  prompt system. (A Planning skill that performs the transformation is in scope as of the design
+  layer's D-009, which supersedes this bullet's earlier inclusion of "skill".)
 - Deciding Jig policy semantics, work-profile realization, model routing, execution-host behavior, or
   merge mechanics.
 - Inventing Product acceptance criteria or Technical Design handoff facts when upstream artifacts are
