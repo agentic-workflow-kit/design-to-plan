@@ -10,8 +10,12 @@ illustrative fixture. It implements and verifies the product promises in
 [`../product/`](../product/) and reconciles to them — where design and product intent conflict, name
 the conflict and resolve it deliberately, not by silent churn.
 
-Altitude and boundary: this is a **docs-only contract seed**. There is intentionally no runtime,
-schema, validator, CLI, or skill here ([`decisions.md`](./decisions.md), D-001).
+Altitude and boundary: this design layer is a contract, its lifecycle, and its decisions — not a
+frozen schema. The transformation it specifies is implemented as the
+[`skills/author-design-to-plan/`](../../skills/author-design-to-plan/) and
+[`skills/review-plan/`](../../skills/review-plan/) skills ([`decisions.md`](./decisions.md), D-009,
+superseding D-001's "no skill" clause). There is still intentionally no schema, validator, CLI,
+runtime package, or eval harness here (D-002, D-006).
 
 ## Contract
 
@@ -36,3 +40,11 @@ schema, validator, CLI, or skill here ([`decisions.md`](./decisions.md), D-001).
 - [`examples/minimal-design-to-plan.md`](./examples/minimal-design-to-plan.md) — an illustrative
   fixture that proves traceability and shape preservation end to end. Not a schema, validator, or
   runtime plan.
+
+## Skills
+
+- [`../../skills/author-design-to-plan/`](../../skills/author-design-to-plan/) — implements the contract's seven
+  stages end to end: ingest, validate the handoff, decompose, build the dependency graph, attach
+  evidence, run the traceability check, stop or emit.
+- [`../../skills/review-plan/`](../../skills/review-plan/) — independently reviews a plan already
+  produced by `author-design-to-plan` (or an equivalent artifact) against this contract's Review Checklist.

@@ -9,6 +9,10 @@ This fixture is illustrative. It demonstrates traceability and shape preservatio
 it is not a frozen JSON Schema, validator fixture, runtime command, or implementation package plan. It
 walks the [`flows.md`](../flows.md) stages once against the [contract](../design-to-plan-contract.md).
 
+The plan below predates the `author-design-to-plan`/`review-plan` skills (D-009) and describes a docs-only
+authoring story; its Constraints section reflects that specific story's own scope, not a claim that
+this repo ships no skill.
+
 ## Input Summary
 
 ### Product PRD References
@@ -97,8 +101,9 @@ rules. No hidden independent story is present in this minimal fixture.
 
 ### Constraints and Limits
 
-- Docs-only changes.
-- No schema, validator, CLI, runtime package, `src/`, skills, eval harness, or implementation package
+- Docs-only changes for this story (it authors the contract and fixture, not a skill — skills
+  landed in a later story; see the predates-D-009 note above).
+- No schema, validator, CLI, runtime package, `src/`, eval harness, or implementation package
   decomposition.
 - Stop rather than invent Product AC IDs, design fact IDs, policy semantics, or Jig runtime behavior.
 

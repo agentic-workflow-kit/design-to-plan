@@ -9,9 +9,10 @@ design-to-plan runs one transformation: an approved technical-design handoff bec
 execution plan. This page is the **lifecycle view**; the normative source is the
 [contract](design-to-plan-contract.md).
 
-The stages are at **design altitude** — a sequence the owner applies by hand (standalone) or that a
-future skill could automate. Nothing here is a runtime; how much of this hardens into a skill is a
-Product open question, recorded in [`decisions.md`](decisions.md).
+The stages are at **design altitude** — a sequence [`skills/author-design-to-plan`](../../skills/author-design-to-plan/)
+automates end to end, or the owner can apply by hand (standalone). Nothing here is a runtime; whether
+Planning eventually needs one beyond the shipped skills stays a Product open question, recorded in
+[`decisions.md`](decisions.md), D-009.
 
 ```mermaid
 flowchart LR

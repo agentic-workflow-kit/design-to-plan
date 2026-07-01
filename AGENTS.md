@@ -18,15 +18,19 @@ design reconciles to; where they conflict, name it rather than silently resolvin
 | ---------------------------------------------- | --------------- |
 | What this is, who it serves, when to use it    | `docs/product/` |
 | How it works (mechanics, decisions, contracts) | `docs/design/`  |
+| The planning transformation itself (skills)    | `skills/`       |
 
-There is intentionally no `src/`, skill pack, schema package, CLI, or runtime in this seed.
+`skills/author-design-to-plan` and `skills/review-plan` implement the transformation this repo owns (see
+`docs/design/decisions.md`, D-009). There is intentionally still no schema package, validator,
+CLI, runtime package, or eval harness in this repo — those remain out of scope (D-002, D-006).
 
 ## Gate and conventions
 
 - **`pnpm check`** before claiming any change done; show its output as evidence, don't assert
-  success. This docs-only repo's gate is lightweight today: Markdown/YAML/JSON formatting through
-  Prettier. If this repo adds code later, work is test-driven with at least 90% coverage, aiming for
-  95%, and `pnpm check` must include the relevant lint, typecheck, and test gates.
+  success. This repo's gate is lightweight today: Markdown/YAML/JSON formatting through Prettier —
+  `skills/` are runbooks (Markdown), not executable code. If this repo adds executable code later,
+  work is test-driven with at least 90% coverage, aiming for 95%, and `pnpm check` must include the
+  relevant lint, typecheck, and test gates.
 - **`main`-based:** branch from `main`, PR into it, green `check` required, review conversations
   resolved, squash-merge. Conventional commit subjects (`feat:`/`fix:`/`docs:`/…); no attribution
   footers.
