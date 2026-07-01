@@ -6,7 +6,7 @@ status: v0
 # Design-to-plan Contract
 
 This contract defines the Planning-layer transformation from an approved technical-design handoff to
-a Jig-ready execution plan. It is a docs-level contract, not a runtime implementation, schema
+an execution-ready plan. It is a docs-level contract, not a runtime implementation, schema
 validator, CLI, prompt, package layout, or TypeScript interface.
 
 ## Contract Posture
