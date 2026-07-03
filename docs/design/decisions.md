@@ -144,6 +144,8 @@ Status legend: `applied`, `open-deferred`, `rejected`.
   When-Not-To-Use sections are updated to carve "skill" out of their "no skill" language
   accordingly, rather than leaving those pages self-contradictory.
 - **Status:** applied
+- **Suggestion:** The eval/fixture harness half of this consequence is resolved by D-011. Runtime,
+  schema, validator, CLI, and package deferrals remain unchanged.
 
 ## D-010 - Make design-to-plan explicitly projection-only and stop on whole-graph/source-closure gaps
 
@@ -160,4 +162,21 @@ Status legend: `applied`, `open-deferred`, `rejected`.
   graph, bind evidence to named gates/checks/artifacts, source every relational/compound operand,
   and stop with a source ID plus owner when those checks fail. No workflow-kit execution-package,
   tracker, or routing structures are imported here.
+- **Status:** applied
+
+## D-011 - Allow repo-local eval suite as a deterministic development quality gate
+
+- **Date:** 2026-07-03
+- **Driver:** Product promises `AC-PLAN-001`, `AC-DAG-001`, `AC-EVID-001`, `AC-TRACE-001`,
+  `AC-SCOPE-001`, and `AC-STOP-001` now have skill implementations (`author-design-to-plan` and
+  `review-plan`) whose projection-only behavior needs repeatable development checks.
+- **Decision:** accepted
+- **Rationale:** D-006 deferred a runtime, validator, schema, and eval harness while the repo was
+  docs-only. This decision lifts only the repo-local eval-harness portion so design-to-plan can use
+  eval-kit plus local deterministic fixtures to test its skills. It does not add a public runtime,
+  CLI, schema package, validator, TypeScript interface, or Jig field-level schema, and it preserves
+  D-002 and D-009.
+- **Consequence:** `evals/` may contain local adapter code, cases, fixtures, schemas for fixture
+  expectations, and deterministic scripts. Model-assisted evals remain advisory and outside
+  `pnpm check` until separately calibrated.
 - **Status:** applied

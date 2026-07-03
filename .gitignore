@@ -29,6 +29,10 @@ pnpm-debug.log*
 .vitest/
 .cache/
 
+# Eval result bundles
+evals/results/*
+!evals/results/README.md
+
 # OS and editor files
 .DS_Store
 .idea/
