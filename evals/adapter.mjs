@@ -1,6 +1,26 @@
 import fs from "node:fs";
 import path from "node:path";
 
+const EXPECTED_ITEMS_SCHEMA_VERSION = "design-to-plan.expected-items.v1";
+const POINTWISE_ITEMS_SCHEMA_VERSION = "design-to-plan.pointwise-items.v1";
+const POINTWISE_KINDS = new Set([
+  "traceability",
+  "graph",
+  "evidence",
+  "scope",
+  "review",
+  "review-quality",
+]);
+const POINTWISE_ITEM_FIELDS = new Set([
+  "item_id",
+  "kind",
+  "severity",
+  "source_refs",
+  "claim",
+  "judge_guidance",
+]);
+const SEVERITIES = new Set(["critical", "high", "medium", "low"]);
+
 const policy = {
   blockingSeverities: new Set(["critical", "high"]),
   blockingVerdicts: new Set(["missing", "contradicted", "invalid"]),
@@ -57,10 +77,12 @@ const assertString = (value, label) => {
   return value;
 };
 
+const readJson = (filePath) => JSON.parse(fs.readFileSync(filePath, "utf8"));
+
 const expectedItemsFor = (expectedItems, label) => {
-  if (expectedItems?.schema_version !== "design-to-plan.expected-items.v1") {
+  if (expectedItems?.schema_version !== EXPECTED_ITEMS_SCHEMA_VERSION) {
     throw new Error(
-      `${label} must use schema_version design-to-plan.expected-items.v1`,
+      `${label} must use schema_version ${EXPECTED_ITEMS_SCHEMA_VERSION}`,
     );
   }
   const checks = asArray(expectedItems.checks, `${label}.checks`);
@@ -75,6 +97,56 @@ const expectedItemsFor = (expectedItems, label) => {
     throw new Error(`${label}.checks ids must be unique`);
   }
   return checks;
+};
+
+const sanitizePointwiseItem = (item, label) => {
+  if (!item || typeof item !== "object" || Array.isArray(item)) {
+    throw new Error(`${label} must be an object`);
+  }
+  for (const field of Object.keys(item)) {
+    if (!POINTWISE_ITEM_FIELDS.has(field)) {
+      throw new Error(`${label}.${field} is not supported`);
+    }
+  }
+
+  const itemId = assertString(item.item_id, `${label}.item_id`);
+  const kind = assertString(item.kind, `${label}.kind`);
+  if (!POINTWISE_KINDS.has(kind)) {
+    throw new Error(`${label}.kind is unsupported: ${kind}`);
+  }
+  const severity = assertString(item.severity, `${label}.severity`);
+  if (!SEVERITIES.has(severity)) {
+    throw new Error(`${label}.severity is unsupported: ${severity}`);
+  }
+  const sourceRefs = asArray(item.source_refs, `${label}.source_refs`);
+  for (const [index, ref] of sourceRefs.entries()) {
+    assertString(ref, `${label}.source_refs[${index}]`);
+  }
+
+  return {
+    item_id: itemId,
+    kind,
+    severity,
+    source_refs: sourceRefs,
+    claim: assertString(item.claim, `${label}.claim`),
+    judge_guidance: assertString(item.judge_guidance, `${label}.judge_guidance`),
+  };
+};
+
+const validatePointwiseItems = (pointwiseItems, label) => {
+  if (pointwiseItems?.schema_version !== POINTWISE_ITEMS_SCHEMA_VERSION) {
+    throw new Error(
+      `${label} must use schema_version ${POINTWISE_ITEMS_SCHEMA_VERSION}`,
+    );
+  }
+  const items = asArray(pointwiseItems.items, `${label}.items`).map(
+    (item, index) => sanitizePointwiseItem(item, `${label}.items[${index}]`),
+  );
+  const ids = items.map((item) => item.item_id);
+  if (new Set(ids).size !== ids.length) {
+    throw new Error(`${label}.items item_id values must be unique`);
+  }
+  return items;
 };
 
 const finding = (check, verdict, evidence) => ({
@@ -287,8 +359,6 @@ export const renderDeterministicReport = ({ caseId, grades, findings }) =>
     ),
   ].join("\n");
 
-const readJson = (filePath) => JSON.parse(fs.readFileSync(filePath, "utf8"));
-
 const validateNoBlankStrings = (value, label, failures) => {
   if (typeof value === "string") {
     if (value.trim().length === 0) {
@@ -348,6 +418,98 @@ const validateCheckShape = (check, label, failures) => {
   }
 };
 
+const artifactFor = (artifacts, role, label) => {
+  const matches = artifacts.filter((artifact) => artifact.role === role);
+  if (matches.length !== 1) {
+    throw new Error(`${label} must define exactly one ${role} artifact`);
+  }
+  return matches[0];
+};
+
+const readArtifactText = ({ resolver, caseDir, artifact }) => {
+  const caseRelative = resolver.relativeToRepo(caseDir);
+  return fs.readFileSync(
+    path.resolve(resolver.repoRoot, caseRelative, artifact.path),
+    "utf8",
+  );
+};
+
+export const resolvePointwiseVars = async ({
+  caseId,
+  caseDir,
+  artifacts,
+  candidateContent,
+  candidatePath,
+  promptVersion,
+  rubricVersion,
+  model,
+  provider,
+  resolver,
+}) => {
+  const caseRelative = resolver.relativeToRepo(caseDir);
+  const sourceArtifacts = artifacts.filter(
+    (artifact) => artifact.role === "generation_visible",
+  );
+  const sourceMaterial = sourceArtifacts
+    .map((artifact) =>
+      [
+        `# ${artifact.path}`,
+        "",
+        readArtifactText({ resolver, caseDir, artifact }),
+      ].join("\n"),
+    )
+    .join("\n\n");
+  const rubric = readArtifactText({
+    resolver,
+    caseDir,
+    artifact: artifactFor(artifacts, "rubric", caseRelative),
+  });
+  const pointwiseItemsPath = path.resolve(
+    resolver.repoRoot,
+    caseRelative,
+    artifactFor(artifacts, "pointwise_expected_items", caseRelative).path,
+  );
+  const expectedItems = validatePointwiseItems(
+    readJson(pointwiseItemsPath),
+    pointwiseItemsPath,
+  );
+
+  return {
+    case_id: caseId,
+    model,
+    provider,
+    prompt_version: promptVersion,
+    rubric_version: rubricVersion,
+    source_material: sourceMaterial,
+    case_rubric: rubric,
+    expected_items: JSON.stringify(expectedItems, null, 2),
+    candidate_path: resolver.relativeToRepo(candidatePath),
+    candidate: candidateContent,
+    _expectedItemsForCanonicalization: expectedItems,
+  };
+};
+
+export const canonicalizeExpectedItemMetadata = (
+  actualItems,
+  expectedItems,
+) => {
+  const actualById = new Map(actualItems.map((item) => [item.item_id, item]));
+  const actualIds = actualItems.map((item) => item.item_id).sort();
+  const expectedIds = expectedItems.map((item) => item.item_id).sort();
+  if (JSON.stringify(actualIds) !== JSON.stringify(expectedIds)) {
+    throw new Error(
+      `pointwise result item_ids mismatch: expected ${JSON.stringify(expectedIds)}, received ${JSON.stringify(actualIds)}`,
+    );
+  }
+
+  return expectedItems.map((expected) => ({
+    ...actualById.get(expected.item_id),
+    kind: expected.kind,
+    severity: expected.severity,
+    source_refs: expected.source_refs,
+  }));
+};
+
 export const validateFixtures = async ({ manifests }) => {
   const failures = [];
   const expectedManifestSchema = "eval-kit.case.v1";
@@ -381,8 +543,16 @@ export const validateFixtures = async ({ manifests }) => {
     const graderInputs = manifest.artifacts.filter(
       (artifact) => artifact.role === "grader_input",
     );
+    const pointwiseInputs = manifest.artifacts.filter(
+      (artifact) => artifact.role === "pointwise_expected_items",
+    );
     if (graderInputs.length !== 1) {
       failures.push(`${label} must define exactly one grader_input artifact`);
+    }
+    if (pointwiseInputs.length > 1) {
+      failures.push(
+        `${label} must define at most one pointwise_expected_items artifact`,
+      );
     }
 
     for (const artifact of manifest.artifacts) {
@@ -414,6 +584,19 @@ export const validateFixtures = async ({ manifests }) => {
             failures,
           );
         }
+      } catch (error) {
+        failures.push(`${artifactPath}: ${error.message}`);
+      }
+    }
+
+    for (const artifact of pointwiseInputs) {
+      const artifactPath = path.resolve(caseDir, artifact.path);
+      if (!fs.existsSync(artifactPath)) continue;
+
+      try {
+        const pointwiseItems = readJson(artifactPath);
+        validatePointwiseItems(pointwiseItems, artifactPath);
+        validateNoBlankStrings(pointwiseItems, artifactPath, failures);
       } catch (error) {
         failures.push(`${artifactPath}: ${error.message}`);
       }

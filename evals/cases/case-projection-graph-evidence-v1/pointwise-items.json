@@ -1,0 +1,75 @@
+{
+  "schema_version": "design-to-plan.pointwise-items.v1",
+  "items": [
+    {
+      "item_id": "projection.trace.story-intake",
+      "kind": "traceability",
+      "severity": "critical",
+      "source_refs": [
+        "AC-PLAN-001",
+        "AC-TRACE-001",
+        "CTX-001",
+        "DEL-001",
+        "VAL-001"
+      ],
+      "claim": "The intake story preserves accepted-input, provenance, plan identity, and track binding facts without adding scope.",
+      "judge_guidance": "Covered only if the candidate ties STORY-INTAKE to the named Product ACs, handoff facts, Jig plan properties, and concrete intake validation."
+    },
+    {
+      "item_id": "projection.trace.story-graph",
+      "kind": "traceability",
+      "severity": "critical",
+      "source_refs": [
+        "AC-DAG-001",
+        "AC-EVID-001",
+        "AC-TRACE-001",
+        "DEL-002",
+        "SEQ-001",
+        "FILE-001",
+        "VAL-002"
+      ],
+      "claim": "The graph/evidence story preserves dependency, source-closure, validation, and evidence facts as a projection from approved sources.",
+      "judge_guidance": "Covered only if the candidate ties STORY-GRAPH to graph/evidence Product ACs, DEL/SEQ/FILE/VAL handoff facts, Jig story/graph/evidence properties, and falsifiable graph evidence."
+    },
+    {
+      "item_id": "projection.trace.story-stop",
+      "kind": "traceability",
+      "severity": "critical",
+      "source_refs": [
+        "AC-SCOPE-001",
+        "AC-STOP-001",
+        "DEL-003",
+        "SEQ-002",
+        "FAIL-001",
+        "VAL-003",
+        "STOP-001"
+      ],
+      "claim": "The stop-policy story preserves source-attributed refusal behavior and constraints for unsourced graph, evidence, or scope gaps.",
+      "judge_guidance": "Covered only if the candidate ties STORY-STOP to the stop/scope Product ACs, stop-condition handoff facts, graph-defect consumption, and review-plan stop-drift evidence."
+    },
+    {
+      "item_id": "projection.graph.source-closure",
+      "kind": "graph",
+      "severity": "critical",
+      "source_refs": ["SEQ-001", "SEQ-002", "FILE-001", "FAIL-001"],
+      "claim": "Every producer-before-consumer edge and consumed artifact/token is sourced and closed by a named story.",
+      "judge_guidance": "Covered only if dependency edges cite SEQ facts and whole-graph reconciliation closes the planner handoff summary table and graph-defect token with named producers."
+    },
+    {
+      "item_id": "projection.evidence.falsifiable",
+      "kind": "evidence",
+      "severity": "critical",
+      "source_refs": ["VAL-001", "VAL-002", "VAL-003"],
+      "claim": "Each story has concrete falsifiable evidence bound to the Product and handoff refs it proves.",
+      "judge_guidance": "Covered only if evidence names commands, checks, or artifacts such as pnpm eval:validate-fixtures, pnpm eval:case, evals/results/<run-id>/report.md, or the review-plan checklist; vague claims such as tests exist are not enough."
+    },
+    {
+      "item_id": "projection.scope.no-jig-schema-runtime",
+      "kind": "scope",
+      "severity": "critical",
+      "source_refs": ["AC-SCOPE-001", "CTX-001"],
+      "claim": "The plan remains projection-only and refuses Jig schema, runtime package, package layout, model routing, or field-level contract invention.",
+      "judge_guidance": "Covered only if the candidate avoids invented schema/runtime/package details and positively frames the work as projection from Product and approved Technical Design facts."
+    }
+  ]
+}

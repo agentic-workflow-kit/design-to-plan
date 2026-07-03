@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "pnpm@11.9.0",
   "engines": {
-    "node": ">=22.13.0",
+    "node": ">=22.22.0",
     "pnpm": ">=11.9.0"
   },
   "devEngines": {
@@ -24,6 +24,7 @@
     "eval:list": "eval-kit list-cases --config evals/eval-kit.config.json",
     "eval:validate-fixtures": "eval-kit validate-fixtures --config evals/eval-kit.config.json",
     "eval:case": "eval-kit run-case --config evals/eval-kit.config.json",
+    "eval:judge:coverage": "eval-kit judge-coverage --config evals/eval-kit.model-judge.config.json",
     "format": "prettier --write \"**/*.{md,yml,yaml,json}\"",
     "format:check": "prettier --check \"**/*.{md,yml,yaml,json}\"",
     "lint": "pnpm format:check",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@agentic-workflow-kit/eval-kit": "github:agentic-workflow-kit/eval-kit#v0.1.2",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "promptfoo": "^0.121.17"
   }
 }

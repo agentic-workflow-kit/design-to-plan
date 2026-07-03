@@ -1,0 +1,67 @@
+{
+  "schema_version": "design-to-plan.pointwise-items.v1",
+  "items": [
+    {
+      "item_id": "review.finding.phantom-consumer",
+      "kind": "review",
+      "severity": "critical",
+      "source_refs": ["FILE-001", "STOP-001"],
+      "claim": "The review flags STORY-CONSUME as a phantom consumer because FILE-SEARCH-API has no approved producer or upstream artifact.",
+      "judge_guidance": "Covered only if the review identifies the phantom consumer, cites whole-graph/source closure, names STORY-CONSUME and FILE-SEARCH-API, and says the plan should have stopped."
+    },
+    {
+      "item_id": "review.finding.unsupported-edge",
+      "kind": "review",
+      "severity": "critical",
+      "source_refs": ["SEQ-001", "STOP-001"],
+      "claim": "The review flags the STORY-ORDER to STORY-CONSUME dependency as unsupported by the approved sequencing source.",
+      "judge_guidance": "Covered only if the review names the unsupported edge, cites dependency graph validity and SEQ-001, and treats the defect as a stop-worthy blocker."
+    },
+    {
+      "item_id": "review.finding.prose-evidence",
+      "kind": "review",
+      "severity": "critical",
+      "source_refs": ["VAL-001", "STOP-001"],
+      "claim": "The review flags prose-only evidence because the defective plan says tests exist instead of binding evidence to the concrete pnpm check gate.",
+      "judge_guidance": "Covered only if the review distinguishes vague evidence from the named VAL-001 gate and identifies the missing concrete command or check."
+    },
+    {
+      "item_id": "review.finding.unsourced-operand",
+      "kind": "review",
+      "severity": "critical",
+      "source_refs": ["STOP-001"],
+      "claim": "The review flags runtime cost within budget as an unsourced operand and stop-condition violation.",
+      "judge_guidance": "Covered only if the review names runtime cost and budget as unsupported values and ties the issue to predicate/operand sourcing or STOP-001."
+    },
+    {
+      "item_id": "review.finding.jig-schema-invention",
+      "kind": "review",
+      "severity": "critical",
+      "source_refs": ["AC-SCOPE-001"],
+      "claim": "The review flags packages/plan-schema/src/index.ts, JSON Schema, and TypeScript interface as forbidden Jig schema invention.",
+      "judge_guidance": "Covered only if the review treats schema/interface/package creation as a scope blocker, not as useful implementation detail."
+    },
+    {
+      "item_id": "review.finding.stop-drift",
+      "kind": "review",
+      "severity": "critical",
+      "source_refs": ["STOP-001"],
+      "claim": "The review flags stop-condition drift because the plan emitted work despite phantom consumers, unsupported edges, prose evidence, or unsourced values.",
+      "judge_guidance": "Covered only if the review says the defective plan should have stopped rather than merely requesting follow-up cleanup."
+    },
+    {
+      "item_id": "review.quality.disposition-ready",
+      "kind": "review-quality",
+      "severity": "high",
+      "source_refs": [
+        "FILE-001",
+        "SEQ-001",
+        "VAL-001",
+        "STOP-001",
+        "AC-SCOPE-001"
+      ],
+      "claim": "The review is disposition-ready: each blocker is independently actionable, source-cited, and severe enough for a reviewer to reject the plan.",
+      "judge_guidance": "Covered only if the review gives clear defect labels, violated requirements, source refs, and concrete remediation posture without accepting the defective plan."
+    }
+  ]
+}
