@@ -1,0 +1,150 @@
+{
+  "schema_version": "design-to-plan.expected-items.v1",
+  "checks": [
+    {
+      "id": "source-ids-preserved",
+      "mode": "required_ids",
+      "kind": "traceability",
+      "severity": "critical",
+      "ids": [
+        "AC-PLAN-001",
+        "AC-DAG-001",
+        "AC-EVID-001",
+        "AC-TRACE-001",
+        "AC-SCOPE-001",
+        "AC-STOP-001",
+        "SRC-001",
+        "CTX-001",
+        "DEL-001",
+        "DEL-002",
+        "DEL-003",
+        "SEQ-001",
+        "SEQ-002",
+        "FILE-001",
+        "FAIL-001",
+        "VAL-001",
+        "VAL-002",
+        "VAL-003",
+        "STOP-001"
+      ]
+    },
+    {
+      "id": "no-jig-schema-runtime-invention",
+      "mode": "forbidden_snippets",
+      "kind": "scope",
+      "severity": "critical",
+      "snippets": [
+        "JSON Schema",
+        "TypeScript interface",
+        "runtime package",
+        "Jig validator",
+        "packages/plan-schema"
+      ]
+    },
+    {
+      "id": "story-intake-trace",
+      "mode": "story_trace",
+      "kind": "traceability",
+      "severity": "critical",
+      "story_id": "STORY-INTAKE",
+      "product_refs": ["AC-PLAN-001", "AC-TRACE-001"],
+      "design_refs": ["CTX-001", "DEL-001", "VAL-001"],
+      "jig_properties": ["Plan identity and provenance", "Track binding"]
+    },
+    {
+      "id": "story-graph-trace",
+      "mode": "story_trace",
+      "kind": "traceability",
+      "severity": "critical",
+      "story_id": "STORY-GRAPH",
+      "product_refs": ["AC-DAG-001", "AC-EVID-001", "AC-TRACE-001"],
+      "design_refs": ["DEL-002", "SEQ-001", "FILE-001", "VAL-002"],
+      "jig_properties": [
+        "Story set",
+        "Dependency and eligibility model",
+        "Done and evidence requirements"
+      ]
+    },
+    {
+      "id": "story-stop-trace",
+      "mode": "story_trace",
+      "kind": "traceability",
+      "severity": "critical",
+      "story_id": "STORY-STOP",
+      "product_refs": ["AC-SCOPE-001", "AC-STOP-001"],
+      "design_refs": ["DEL-003", "SEQ-002", "FAIL-001", "VAL-003", "STOP-001"],
+      "jig_properties": [
+        "Authority and approval needs",
+        "Constraints and limits"
+      ]
+    },
+    {
+      "id": "intake-before-graph",
+      "mode": "dependency_edge",
+      "kind": "graph",
+      "severity": "critical",
+      "from": "STORY-INTAKE",
+      "to": "STORY-GRAPH",
+      "source_refs": ["SEQ-001"]
+    },
+    {
+      "id": "graph-before-stop",
+      "mode": "dependency_edge",
+      "kind": "graph",
+      "severity": "critical",
+      "from": "STORY-GRAPH",
+      "to": "STORY-STOP",
+      "source_refs": ["SEQ-002"]
+    },
+    {
+      "id": "file-source-closure",
+      "mode": "source_closure",
+      "kind": "graph",
+      "severity": "critical",
+      "consumer": "STORY-GRAPH",
+      "consumed": "planner handoff summary table",
+      "source_refs": ["FILE-001"],
+      "closed_by": "STORY-INTAKE"
+    },
+    {
+      "id": "failure-token-source-closure",
+      "mode": "source_closure",
+      "kind": "graph",
+      "severity": "critical",
+      "consumer": "STORY-STOP",
+      "consumed": "graph-defect token",
+      "source_refs": ["FAIL-001"],
+      "closed_by": "STORY-GRAPH"
+    },
+    {
+      "id": "intake-evidence-concrete",
+      "mode": "evidence_binding",
+      "kind": "evidence",
+      "severity": "critical",
+      "story_id": "STORY-INTAKE",
+      "concrete_refs": ["pnpm eval:validate-fixtures"],
+      "proves_product_refs": ["AC-PLAN-001"],
+      "proves_design_refs": ["VAL-001"]
+    },
+    {
+      "id": "graph-evidence-concrete",
+      "mode": "evidence_binding",
+      "kind": "evidence",
+      "severity": "critical",
+      "story_id": "STORY-GRAPH",
+      "concrete_refs": ["pnpm eval:case", "evals/results/<run-id>/report.md"],
+      "proves_product_refs": ["AC-DAG-001", "AC-EVID-001"],
+      "proves_design_refs": ["VAL-002"]
+    },
+    {
+      "id": "stop-evidence-concrete",
+      "mode": "evidence_binding",
+      "kind": "evidence",
+      "severity": "critical",
+      "story_id": "STORY-STOP",
+      "concrete_refs": ["review-plan checklist"],
+      "proves_product_refs": ["AC-SCOPE-001", "AC-STOP-001"],
+      "proves_design_refs": ["VAL-003", "STOP-001"]
+    }
+  ]
+}
