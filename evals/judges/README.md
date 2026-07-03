@@ -32,6 +32,13 @@ The first P0 lane covers:
 
 ## Manual Use
 
+This repo follows the eval-kit two-config standard:
+
+- `evals/eval-kit.config.json` stays deterministic, default, and CI-safe.
+- `evals/eval-kit.model-judge.config.json` enables the manual pointwise judge lane.
+- Pairwise judging remains deferred unless a future calibrated comparison workflow adds a separate
+  config.
+
 Run deterministic checks first:
 
 ```sh
@@ -41,11 +48,22 @@ pnpm eval:validate-fixtures
 pnpm check
 ```
 
+Validate the manual judge config before running provider-backed judging:
+
+```sh
+pnpm eval:judge:doctor
+pnpm eval:judge:list
+pnpm eval:judge:validate-fixtures
+```
+
 Then, only when a provider-backed local judge is intentionally configured, run:
 
 ```sh
-pnpm eval:judge:coverage -- --case case-projection-graph-evidence-v1 --candidate evals/cases/case-projection-graph-evidence-v1/candidate-good.md --model <model> --provider <provider> --effort medium
+pnpm eval:judge:coverage -- --case case-projection-graph-evidence-v1 --candidate evals/cases/case-projection-graph-evidence-v1/candidate-good.md --model gpt-5.5 --provider openai --effort medium
 ```
+
+`gpt-5.5` is an account-supported example for local calibration, not a permanent model policy; use
+any approved model supported by the current account.
 
 Record human calibration separately from raw Promptfoo output. Calibration notes should identify
 false passes, false fails, ambiguity, verbosity bias, wording overfit, and `unknown` rate.
