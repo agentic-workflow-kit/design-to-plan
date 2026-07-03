@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../node_modules/@agentic-workflow-kit/eval-kit/schemas/case-manifest.schema.json",
+  "schema_version": "eval-kit.case.v1",
+  "case_id": "case-projection-graph-evidence-v1",
+  "case_type": "deterministic",
+  "artifacts": [
+    { "role": "generation_visible", "path": "source-product.md" },
+    { "role": "generation_visible", "path": "source-handoff.md" },
+    { "role": "grader_input", "path": "expected-items.json" },
+    { "role": "candidate_good", "path": "candidate-good.md" },
+    { "role": "candidate_bad", "path": "candidate-bad-phantom.md" },
+    { "role": "rubric", "path": "rubric.md" },
+    { "role": "provenance", "path": "provenance.md" }
+  ],
+  "metadata": {
+    "purpose": "Checks a valid emitted plan for projection-only traceability, graph closure, evidence binding, ordered decomposition, and no Jig schema/runtime invention."
+  }
+}

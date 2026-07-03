@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentic-workflow-kit.local/design-to-plan/expected-items.schema.json",
+  "title": "DesignToPlanExpectedItems",
+  "description": "Repo-local deterministic eval expectation schema. This is not a Jig plan schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checks"],
+  "properties": {
+    "schema_version": {
+      "const": "design-to-plan.expected-items.v1"
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id", "mode", "kind", "severity"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "mode": {
+            "enum": [
+              "required_ids",
+              "forbidden_snippets",
+              "story_trace",
+              "dependency_edge",
+              "source_closure",
+              "evidence_binding",
+              "stop_attribution",
+              "review_findings"
+            ]
+          },
+          "kind": { "type": "string", "minLength": 1 },
+          "severity": {
+            "enum": ["critical", "high", "medium", "low"]
+          }
+        }
+      }
+    }
+  }
+}

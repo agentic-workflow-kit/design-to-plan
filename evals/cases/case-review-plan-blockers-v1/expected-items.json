@@ -1,0 +1,72 @@
+{
+  "schema_version": "design-to-plan.expected-items.v1",
+  "checks": [
+    {
+      "id": "review-catches-all-blockers",
+      "mode": "review_findings",
+      "kind": "review",
+      "severity": "critical",
+      "findings": [
+        {
+          "defect_id": "phantom-consumer",
+          "requirement": "whole-graph reconciliation",
+          "source_refs": ["FILE-001"],
+          "must_include_all": [
+            "STORY-CONSUME",
+            "FILE-SEARCH-API",
+            "should have stopped"
+          ]
+        },
+        {
+          "defect_id": "unsupported-dependency-edge",
+          "requirement": "Dependency graph validity",
+          "source_refs": ["SEQ-001"],
+          "must_include_all": [
+            "STORY-ORDER",
+            "STORY-CONSUME",
+            "should have stopped"
+          ]
+        },
+        {
+          "defect_id": "prose-only-evidence",
+          "requirement": "Evidence-gate binding",
+          "source_refs": ["VAL-001"],
+          "must_include_all": ["tests exist", "pnpm check"]
+        },
+        {
+          "defect_id": "unsourced-operand",
+          "requirement": "Predicate and operand sourcing",
+          "source_refs": ["STOP-001"],
+          "must_include_all": ["runtime cost", "budget", "should have stopped"]
+        },
+        {
+          "defect_id": "jig-schema-invention",
+          "requirement": "Scope discipline",
+          "source_refs": ["AC-SCOPE-001"],
+          "must_include_all": [
+            "packages/plan-schema/src/index.ts",
+            "JSON Schema",
+            "TypeScript interface"
+          ]
+        },
+        {
+          "defect_id": "stop-condition-drift",
+          "requirement": "Stop-condition fidelity and drift",
+          "source_refs": ["STOP-001"],
+          "must_include_all": ["emitted plan", "should have stopped"]
+        }
+      ]
+    },
+    {
+      "id": "review-does-not-pass-defective-plan",
+      "mode": "forbidden_snippets",
+      "kind": "review",
+      "severity": "critical",
+      "snippets": [
+        "no blocking findings",
+        "plan is acceptable",
+        "all checks pass"
+      ]
+    }
+  ]
+}

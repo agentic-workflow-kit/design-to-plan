@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../node_modules/@agentic-workflow-kit/eval-kit/schemas/case-manifest.schema.json",
+  "schema_version": "eval-kit.case.v1",
+  "case_id": "case-missing-design-source-stop-v1",
+  "case_type": "deterministic",
+  "artifacts": [
+    { "role": "generation_visible", "path": "source-product.md" },
+    { "role": "generation_visible", "path": "source-handoff.md" },
+    { "role": "grader_input", "path": "expected-items.json" },
+    { "role": "candidate_good", "path": "candidate-good.md" },
+    { "role": "candidate_bad", "path": "candidate-bad-invents-facts.md" },
+    { "role": "rubric", "path": "rubric.md" },
+    { "role": "provenance", "path": "provenance.md" }
+  ],
+  "metadata": {
+    "purpose": "Checks that a missing or TBD Technical Design handoff source causes stop-and-attribute behavior instead of invented handoff facts."
+  }
+}

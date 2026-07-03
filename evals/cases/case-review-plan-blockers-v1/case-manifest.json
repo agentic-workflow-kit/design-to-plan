@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../node_modules/@agentic-workflow-kit/eval-kit/schemas/case-manifest.schema.json",
+  "schema_version": "eval-kit.case.v1",
+  "case_id": "case-review-plan-blockers-v1",
+  "case_type": "deterministic",
+  "artifacts": [
+    { "role": "generation_visible", "path": "defective-plan.md" },
+    { "role": "generation_visible", "path": "source-handoff.md" },
+    { "role": "grader_input", "path": "expected-items.json" },
+    { "role": "candidate_good", "path": "candidate-good-review.md" },
+    { "role": "candidate_bad", "path": "candidate-bad-review.md" },
+    { "role": "rubric", "path": "rubric.md" },
+    { "role": "provenance", "path": "provenance.md" }
+  ],
+  "metadata": {
+    "purpose": "Checks that review-plan catches bad emitted plans with phantom consumers, unsupported edges, prose-only evidence, unsourced operands, stop drift, and Jig schema invention."
+  }
+}

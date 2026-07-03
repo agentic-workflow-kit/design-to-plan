@@ -1,0 +1,31 @@
+{
+  "schema_version": "design-to-plan.expected-items.v1",
+  "checks": [
+    {
+      "id": "stop-names-missing-product-ac",
+      "mode": "stop_attribution",
+      "kind": "stop",
+      "severity": "critical",
+      "source_ids": ["AC-BILLING-777", "SRC-001"],
+      "owner": "Product owner",
+      "failure_class": "input validity",
+      "must_include_all": [
+        "missing Product acceptance criterion",
+        "no plan emitted"
+      ],
+      "must_not_emit_plan": true
+    },
+    {
+      "id": "does-not-invent-product-ac",
+      "mode": "forbidden_snippets",
+      "kind": "scope",
+      "severity": "critical",
+      "snippets": [
+        "AC-INVENTED",
+        "assume AC-BILLING-777",
+        "Plan ID",
+        "Story Set"
+      ]
+    }
+  ]
+}

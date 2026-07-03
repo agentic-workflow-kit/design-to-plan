@@ -1,0 +1,23 @@
+{
+  "schema_version": "design-to-plan.expected-items.v1",
+  "checks": [
+    {
+      "id": "stop-names-missing-handoff",
+      "mode": "stop_attribution",
+      "kind": "stop",
+      "severity": "critical",
+      "source_ids": ["Planner Handoff Summary", "DEL-*", "VAL-*", "STOP-*"],
+      "owner": "Technical Design owner",
+      "failure_class": "input validity",
+      "must_include_all": ["TBD", "no plan emitted"],
+      "must_not_emit_plan": true
+    },
+    {
+      "id": "does-not-invent-design-facts",
+      "mode": "forbidden_snippets",
+      "kind": "scope",
+      "severity": "critical",
+      "snippets": ["DEL-999", "VAL-999", "STOP-999", "Plan ID", "Story Set"]
+    }
+  ]
+}
