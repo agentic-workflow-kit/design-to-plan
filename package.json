@@ -25,6 +25,7 @@
     "eval:validate-fixtures": "eval-kit validate-fixtures --config evals/eval-kit.config.json",
     "eval:case": "eval-kit run-case --config evals/eval-kit.config.json",
     "eval:judge:coverage": "eval-kit judge-coverage --config evals/eval-kit.model-judge.config.json",
+    "eval:report": "eval-kit report --config evals/eval-kit.config.json",
     "format": "prettier --write \"**/*.{md,yml,yaml,json}\"",
     "format:check": "prettier --check \"**/*.{md,yml,yaml,json}\"",
     "lint": "pnpm format:check",
