@@ -67,6 +67,10 @@ const expectedItemsFor = (expectedItems, label) => {
   const ids = checks.map((check, index) =>
     assertString(check.id, `${label}.checks[${index}].id`),
   );
+  for (const [index, check] of checks.entries()) {
+    assertString(check.kind, `${label}.checks[${index}].kind`);
+    assertString(check.severity, `${label}.checks[${index}].severity`);
+  }
   if (new Set(ids).size !== ids.length) {
     throw new Error(`${label}.checks ids must be unique`);
   }
@@ -309,6 +313,8 @@ const validateCheckShape = (check, label, failures) => {
   try {
     assertString(check.id, `${label}.id`);
     assertString(check.mode, `${label}.mode`);
+    assertString(check.kind, `${label}.kind`);
+    assertString(check.severity, `${label}.severity`);
   } catch (error) {
     failures.push(error.message);
     return;
