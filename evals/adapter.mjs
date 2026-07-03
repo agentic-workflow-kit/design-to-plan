@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -129,7 +130,10 @@ const sanitizePointwiseItem = (item, label) => {
     severity,
     source_refs: sourceRefs,
     claim: assertString(item.claim, `${label}.claim`),
-    judge_guidance: assertString(item.judge_guidance, `${label}.judge_guidance`),
+    judge_guidance: assertString(
+      item.judge_guidance,
+      `${label}.judge_guidance`,
+    ),
   };
 };
 
@@ -530,6 +534,50 @@ const writeReportJson = (filePath, value) => {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
 };
 
+const sha256Text = (value) =>
+  crypto.createHash("sha256").update(value).digest("hex");
+
+const isNonEmptyString = (value) =>
+  typeof value === "string" && value.trim().length > 0;
+
+const manifestCandidateSha256 = (manifest, label) => {
+  const candidates = (manifest.artifacts ?? []).filter(
+    (artifact) => artifact.role === "candidate_markdown",
+  );
+  if (candidates.length !== 1) {
+    throw new Error(
+      `${label} must include exactly one candidate_markdown artifact`,
+    );
+  }
+  const candidateSha = candidates[0].sha256;
+  if (!isNonEmptyString(candidateSha)) {
+    throw new Error(`${label} candidate_markdown artifact must include sha256`);
+  }
+  return candidateSha;
+};
+
+const pointwiseCandidateFromConfig = (pointwiseDir) => {
+  const promptfooConfig = readReportJson(
+    path.join(pointwiseDir, "promptfooconfig.json"),
+    "pointwise promptfoo config",
+  );
+  const vars = promptfooConfig.tests?.[0]?.vars;
+  if (!vars || typeof vars !== "object") {
+    throw new Error("pointwise promptfoo config must include tests[0].vars");
+  }
+  if (!isNonEmptyString(vars.candidate)) {
+    throw new Error(
+      "pointwise promptfoo config must include candidate content",
+    );
+  }
+  return {
+    path: isNonEmptyString(vars.candidate_path)
+      ? vars.candidate_path
+      : "unknown",
+    sha256: sha256Text(vars.candidate),
+  };
+};
+
 export const compileReport = async ({ runs, resultDir, resolver }) => {
   if (runs["judge-coverage"] && !runs.deterministic) {
     throw new Error(
@@ -547,9 +595,14 @@ export const compileReport = async ({ runs, resultDir, resolver }) => {
   const artifacts = [];
   const outputFiles = [];
   let deterministicCaseId = "";
+  let deterministicCandidateSha256 = "";
 
   if (runs.deterministic) {
     const deterministicDir = resolver.resolveRunDir(runs.deterministic);
+    const deterministicManifest = readReportJson(
+      path.join(deterministicDir, "manifest.json"),
+      "deterministic manifest",
+    );
     const grades = readReportJson(
       path.join(deterministicDir, "grades.json"),
       "deterministic grades",
@@ -559,6 +612,10 @@ export const compileReport = async ({ runs, resultDir, resolver }) => {
       "deterministic report",
     );
     deterministicCaseId = grades.case_id ?? "";
+    deterministicCandidateSha256 = manifestCandidateSha256(
+      deterministicManifest,
+      "deterministic manifest",
+    );
     if (deterministicCaseId) caseIds.add(deterministicCaseId);
 
     reportParts.push(
@@ -602,6 +659,12 @@ export const compileReport = async ({ runs, resultDir, resolver }) => {
     if (pointwiseResult.case_id !== deterministicCaseId) {
       throw new Error(
         `pointwise case ${pointwiseResult.case_id} does not match deterministic case ${deterministicCaseId}`,
+      );
+    }
+    const pointwiseCandidate = pointwiseCandidateFromConfig(pointwiseDir);
+    if (pointwiseCandidate.sha256 !== deterministicCandidateSha256) {
+      throw new Error(
+        `pointwise candidate ${pointwiseCandidate.path} does not match deterministic candidate`,
       );
     }
     const verdictCounts = Object.entries(
