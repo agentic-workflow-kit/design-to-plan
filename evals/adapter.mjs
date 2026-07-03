@@ -510,6 +510,138 @@ export const canonicalizeExpectedItemMetadata = (
   }));
 };
 
+const readReportJson = (filePath, label) => {
+  try {
+    return readJson(filePath);
+  } catch (error) {
+    throw new Error(`failed to read ${label}: ${error.message}`);
+  }
+};
+
+const readReportText = (filePath, label) => {
+  try {
+    return fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    throw new Error(`failed to read ${label}: ${error.message}`);
+  }
+};
+
+const writeReportJson = (filePath, value) => {
+  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
+};
+
+export const compileReport = async ({ runs, resultDir, resolver }) => {
+  if (runs["judge-coverage"] && !runs.deterministic) {
+    throw new Error(
+      "manual reports with pointwise judge evidence must include a deterministic run",
+    );
+  }
+
+  const reportParts = [
+    "# Manual Eval Report",
+    "",
+    "Deterministic evals remain authoritative. Model-judge results are manual, advisory evidence and cannot upgrade deterministic red or yellow results.",
+    "",
+  ];
+  const caseIds = new Set();
+  const artifacts = [];
+  const outputFiles = [];
+
+  if (runs.deterministic) {
+    const deterministicDir = resolver.resolveRunDir(runs.deterministic);
+    const grades = readReportJson(
+      path.join(deterministicDir, "grades.json"),
+      "deterministic grades",
+    );
+    const report = readReportText(
+      path.join(deterministicDir, "report.md"),
+      "deterministic report",
+    );
+    if (grades.case_id) caseIds.add(grades.case_id);
+
+    reportParts.push(
+      "## Deterministic Verdict",
+      "",
+      `- Run: ${runs.deterministic}`,
+      `- Case: ${grades.case_id ?? "unknown"}`,
+      `- Verdict: ${grades.verdict ?? "unknown"}`,
+      "",
+      report.trim(),
+      "",
+    );
+
+    writeReportJson(path.join(resultDir, "deterministic-grades.json"), grades);
+    artifacts.push({
+      role: "deterministic_grades",
+      path: "deterministic-grades.json",
+      mediaType: "application/json",
+    });
+    outputFiles.push("deterministic-grades.json");
+  } else {
+    reportParts.push(
+      "## Deterministic Verdict",
+      "",
+      "No deterministic run was included. Do not use this report to interpret model-judge evidence.",
+      "",
+    );
+  }
+
+  if (runs["judge-coverage"]) {
+    const pointwiseDir = resolver.resolveRunDir(runs["judge-coverage"]);
+    const pointwiseResult = readReportJson(
+      path.join(pointwiseDir, "pointwise-result.json"),
+      "pointwise result",
+    );
+    const pointwiseReport = readReportText(
+      path.join(pointwiseDir, "report.md"),
+      "pointwise report",
+    );
+    if (pointwiseResult.case_id) caseIds.add(pointwiseResult.case_id);
+    const verdictCounts = Object.entries(
+      (pointwiseResult.items ?? []).reduce(
+        (counts, item) => ({
+          ...counts,
+          [item.verdict]: (counts[item.verdict] ?? 0) + 1,
+        }),
+        {},
+      ),
+    )
+      .map(([verdict, count]) => `${verdict}: ${count}`)
+      .join(", ");
+
+    reportParts.push(
+      "## Advisory Pointwise Judge",
+      "",
+      `- Run: ${runs["judge-coverage"]}`,
+      `- Case: ${pointwiseResult.case_id ?? "unknown"}`,
+      `- Item verdicts: ${verdictCounts || "none"}`,
+      "",
+      "This section is calibration evidence only. It cannot override deterministic blockers.",
+      "",
+      pointwiseReport.trim(),
+      "",
+    );
+
+    writeReportJson(
+      path.join(resultDir, "pointwise-result.json"),
+      pointwiseResult,
+    );
+    artifacts.push({
+      role: "pointwise_judge_result",
+      path: "pointwise-result.json",
+      mediaType: "application/json",
+    });
+    outputFiles.push("pointwise-result.json");
+  }
+
+  return {
+    reportContent: reportParts.join("\n"),
+    caseIds: [...caseIds],
+    artifacts,
+    outputFiles,
+  };
+};
+
 export const validateFixtures = async ({ manifests }) => {
   const failures = [];
   const expectedManifestSchema = "eval-kit.case.v1";

@@ -49,3 +49,22 @@ pnpm eval:judge:coverage -- --case case-projection-graph-evidence-v1 --candidate
 
 Record human calibration separately from raw Promptfoo output. Calibration notes should identify
 false passes, false fails, ambiguity, verbosity bias, wording overfit, and `unknown` rate.
+
+Use `evals/judges/calibration-notes.template.md` for human-reviewed calibration notes. Keep raw
+Promptfoo outputs local under `evals/results/`; commit only curated summaries.
+
+## Manual Reports
+
+Manual reports combine existing local run bundles. They are for reviewer handoff and calibration,
+not CI.
+
+```sh
+pnpm eval:report -- --run-id manual-report-projection-good --deterministic local-det-projection-good --judge-coverage manual-pointwise-projection-good
+```
+
+Report policy:
+
+- include deterministic evidence first;
+- include pointwise evidence only after deterministic evidence for the same review context exists;
+- state that model-judge results cannot upgrade deterministic red or yellow verdicts;
+- keep generated report bundles under ignored `evals/results/` unless a human curates a summary.
