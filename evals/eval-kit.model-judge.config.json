@@ -7,7 +7,10 @@
   "adapter": "adapter.mjs",
   "cases": {
     "root": "cases",
-    "include": ["case-*-v1"]
+    "include": [
+      "case-projection-graph-evidence-v1",
+      "case-review-plan-blockers-v1"
+    ]
   },
   "prompt_templates": {
     "pointwise_judge": "judges/pointwise.prompt.md"
