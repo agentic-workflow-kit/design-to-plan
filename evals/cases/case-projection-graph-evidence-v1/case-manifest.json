@@ -7,6 +7,7 @@
     { "role": "generation_visible", "path": "source-product.md" },
     { "role": "generation_visible", "path": "source-handoff.md" },
     { "role": "grader_input", "path": "expected-items.json" },
+    { "role": "pointwise_expected_items", "path": "pointwise-items.json" },
     { "role": "candidate_good", "path": "candidate-good.md" },
     { "role": "candidate_bad", "path": "candidate-bad-phantom.md" },
     { "role": "rubric", "path": "rubric.md" },

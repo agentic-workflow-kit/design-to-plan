@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentic-workflow-kit.local/design-to-plan/pointwise-expected-items.schema.json",
+  "title": "DesignToPlanPointwiseExpectedItems",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "items"],
+  "properties": {
+    "schema_version": {
+      "const": "design-to-plan.pointwise-items.v1"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item_id",
+          "kind",
+          "severity",
+          "source_refs",
+          "claim",
+          "judge_guidance"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "traceability",
+              "graph",
+              "evidence",
+              "scope",
+              "review",
+              "review-quality"
+            ]
+          },
+          "severity": {
+            "enum": ["critical", "high", "medium", "low"]
+          },
+          "source_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "claim": {
+            "type": "string",
+            "minLength": 1
+          },
+          "judge_guidance": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
