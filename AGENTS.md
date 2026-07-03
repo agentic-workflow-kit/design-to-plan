@@ -22,7 +22,8 @@ design reconciles to; where they conflict, name it rather than silently resolvin
 
 `skills/author-design-to-plan` and `skills/review-plan` implement the transformation this repo owns (see
 `docs/design/decisions.md`, D-009). There is intentionally still no schema package, validator,
-CLI, runtime package, or eval harness in this repo — those remain out of scope (D-002, D-006).
+CLI, or runtime package in this repo — those remain out of scope (D-002, D-006). A repo-local
+deterministic eval harness is allowed by D-011.
 
 ## Gate and conventions
 

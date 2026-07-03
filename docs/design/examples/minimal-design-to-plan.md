@@ -119,8 +119,7 @@ rules. No hidden independent story is present in this minimal fixture.
 
 - Docs-only changes for this story (it authors the contract and fixture, not a skill — skills
   landed in a later story; see the predates-D-009 note above).
-- No schema, validator, CLI, runtime package, `src/`, eval harness, or implementation package
-  decomposition.
+- No schema, validator, CLI, runtime package, `src/`, or implementation package decomposition.
 - Stop rather than invent Product AC IDs, design fact IDs, producer/source closure, policy
   semantics, or Jig runtime behavior.
 

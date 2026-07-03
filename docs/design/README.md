@@ -14,8 +14,8 @@ Altitude and boundary: this design layer is a contract, its lifecycle, and its d
 frozen schema. The transformation it specifies is implemented as the
 [`skills/author-design-to-plan/`](../../skills/author-design-to-plan/) and
 [`skills/review-plan/`](../../skills/review-plan/) skills ([`decisions.md`](./decisions.md), D-009,
-superseding D-001's "no skill" clause). There is still intentionally no schema, validator, CLI,
-runtime package, or eval harness here (D-002, D-006).
+superseding D-001's "no skill" clause). There is still intentionally no schema, validator, CLI, or
+runtime package here (D-002, D-006); the repo-local deterministic eval harness is allowed by D-011.
 
 ## Contract
 
