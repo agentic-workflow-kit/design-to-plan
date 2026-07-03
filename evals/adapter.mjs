@@ -546,6 +546,7 @@ export const compileReport = async ({ runs, resultDir, resolver }) => {
   const caseIds = new Set();
   const artifacts = [];
   const outputFiles = [];
+  let deterministicCaseId = "";
 
   if (runs.deterministic) {
     const deterministicDir = resolver.resolveRunDir(runs.deterministic);
@@ -557,7 +558,8 @@ export const compileReport = async ({ runs, resultDir, resolver }) => {
       path.join(deterministicDir, "report.md"),
       "deterministic report",
     );
-    if (grades.case_id) caseIds.add(grades.case_id);
+    deterministicCaseId = grades.case_id ?? "";
+    if (deterministicCaseId) caseIds.add(deterministicCaseId);
 
     reportParts.push(
       "## Deterministic Verdict",
@@ -597,6 +599,11 @@ export const compileReport = async ({ runs, resultDir, resolver }) => {
       "pointwise report",
     );
     if (pointwiseResult.case_id) caseIds.add(pointwiseResult.case_id);
+    if (pointwiseResult.case_id !== deterministicCaseId) {
+      throw new Error(
+        `pointwise case ${pointwiseResult.case_id} does not match deterministic case ${deterministicCaseId}`,
+      );
+    }
     const verdictCounts = Object.entries(
       (pointwiseResult.items ?? []).reduce(
         (counts, item) => ({
