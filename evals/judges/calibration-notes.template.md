@@ -17,13 +17,13 @@ Date: `<YYYY-MM-DD>`
 ## Expected Human Label
 
 - Good candidate expectation: `<critical items covered>`
-- Bad candidate expectation: `<intended critical misses or contradictions>`
+- Bad candidate expectation: `<intended critical misses, partials, contradictions, or ambiguity>`
 
 ## Item Review
 
-| Item ID | Expected human label | Judge verdict | Disposition            | Notes          |
-| ------- | -------------------- | ------------- | ---------------------- | -------------- |
-| `<id>`  | `<covered/missing>`  | `<verdict>`   | `<ok/fp/fn/ambiguous>` | `<short note>` |
+| Item ID | Expected human label             | Judge verdict | Disposition            | Notes          |
+| ------- | -------------------------------- | ------------- | ---------------------- | -------------- |
+| `<id>`  | `<covered/adverse/non-critical>` | `<verdict>`   | `<ok/fp/fn/ambiguous>` | `<short note>` |
 
 ## Bias And Failure Modes
 
@@ -33,6 +33,8 @@ Date: `<YYYY-MM-DD>`
 - Verbosity bias:
 - Reference-wording bias:
 - Unknown rate:
+- Critical partials:
+- Expected-bad pass-like coverage:
 
 ## Decision
 
