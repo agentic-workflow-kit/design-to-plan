@@ -33,28 +33,22 @@
 
 ## Done and Evidence Requirements
 
-| Story ID     | Concrete evidence                                                       | Proves product refs      | Proves design refs |
-| ------------ | ----------------------------------------------------------------------- | ------------------------ | ------------------ |
-| STORY-INTAKE | pnpm eval:validate-fixtures and reviewer inspection of provenance rows  | AC-PLAN-001              | VAL-001            |
-| STORY-GRAPH  | pnpm eval:case with preserved evals/results/<run-id>/report.md artifact | AC-DAG-001 AC-EVID-001   | VAL-002            |
-| STORY-STOP   | review-plan checklist against stop-condition drift                      | AC-SCOPE-001 AC-STOP-001 | VAL-003 STOP-001   |
+| Story ID     | Concrete evidence                                                       | Proves product refs                 | Proves design refs |
+| ------------ | ----------------------------------------------------------------------- | ----------------------------------- | ------------------ |
+| STORY-INTAKE | pnpm eval:validate-fixtures and reviewer inspection of provenance rows  | AC-PLAN-001 AC-TRACE-001            | VAL-001            |
+| STORY-GRAPH  | pnpm eval:case with preserved evals/results/<run-id>/report.md artifact | AC-DAG-001 AC-EVID-001 AC-TRACE-001 | VAL-002            |
+| STORY-STOP   | review-plan checklist against stop-condition drift                      | AC-SCOPE-001 AC-STOP-001            | VAL-003 STOP-001   |
 
-## Authority and Approval Needs
+## Projection Boundary
 
-Workers may read fixtures, edit local eval Markdown/JSON, and run local deterministic checks. Runner
-actions such as push, merge, production writes, model calls, policy changes, or public package
-publication require owner approval.
+This plan projects only the Product PRD and approved handoff facts listed above. It does not define
+worker permissions, runner approval rules, package layout, model routing, runtime behavior, policy
+changes, publication behavior, or Jig field-level schema.
 
-## Policy and Work-Profile References
+## Source Policy References
 
 Policy ref is deterministic-local. Work profile is planning-fixture-author. The plan preserves those
 refs without embedding mutable policy semantics.
-
-## Stack-Seam Requirements
-
-Agent capability is source-preserving Markdown authoring. Execution Host capability is local pnpm
-commands only. Forge capability is review status visibility. Work Source capability is reading the
-Product PRD and approved Technical Design handoff.
 
 ## Constraints and Limits
 
