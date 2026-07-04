@@ -35,7 +35,7 @@
     "check": "pnpm lint"
   },
   "devDependencies": {
-    "@agentic-workflow-kit/eval-kit": "github:agentic-workflow-kit/eval-kit#v0.1.6",
+    "@agentic-workflow-kit/eval-kit": "github:agentic-workflow-kit/eval-kit#v0.1.7",
     "prettier": "^3.6.2",
     "promptfoo": "^0.121.17"
   }
