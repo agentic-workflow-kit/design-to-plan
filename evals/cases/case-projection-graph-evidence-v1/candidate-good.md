@@ -45,10 +45,21 @@ This plan projects only the Product PRD and approved handoff facts listed above.
 worker permissions, runner approval rules, package layout, model routing, runtime behavior, policy
 changes, publication behavior, or Jig field-level schema.
 
+## Authority and Approval Needs
+
+Not specified by the Product PRD or approved handoff beyond the source policy refs below. Authority,
+approval, push, merge, publication, model-call, and policy-change rules remain out of scope for this
+projection.
+
 ## Source Policy References
 
 Policy ref is deterministic-local. Work profile is planning-fixture-author. The plan preserves those
 refs without embedding mutable policy semantics.
+
+## Stack-Seam Requirements
+
+Not specified by the Product PRD or approved handoff. Agent, Execution Host, Forge, Work Source,
+runtime responsibilities, and Jig schema responsibilities remain out of scope for this projection.
 
 ## Constraints and Limits
 
