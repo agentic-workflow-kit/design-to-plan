@@ -15,8 +15,8 @@ importers:
   .:
     devDependencies:
       '@agentic-workflow-kit/eval-kit':
-        specifier: github:agentic-workflow-kit/eval-kit#v0.1.3
-        version: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/1302ec0261674c2a3d14ba7ff49ec67e4b5fee27
+        specifier: github:agentic-workflow-kit/eval-kit#v0.1.4
+        version: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/39d9991ee41009f70a26155ee07886b105160abd
       prettier:
         specifier: ^3.6.2
         version: 3.9.3
@@ -26,9 +26,9 @@ importers:
 
 packages:
 
-  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/1302ec0261674c2a3d14ba7ff49ec67e4b5fee27':
-    resolution: {gitHosted: true, integrity: sha512-iEAejAn4igspvybA7fV9NpgFDMh4KTm2zKtpsec5NEyXN1CPsHoEuRW/MHggKcNYPhQlBkFvNEF/MRwNolsx+w==, tarball: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/1302ec0261674c2a3d14ba7ff49ec67e4b5fee27}
-    version: 0.1.3
+  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/39d9991ee41009f70a26155ee07886b105160abd':
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/39d9991ee41009f70a26155ee07886b105160abd}
+    version: 0.1.4
     engines: {node: '>=22.13.0', pnpm: '>=11.9.0'}
     hasBin: true
 
@@ -3431,7 +3431,7 @@ packages:
 
 snapshots:
 
-  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/1302ec0261674c2a3d14ba7ff49ec67e4b5fee27':
+  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/39d9991ee41009f70a26155ee07886b105160abd':
     dependencies:
       ajv: 8.20.0
 
