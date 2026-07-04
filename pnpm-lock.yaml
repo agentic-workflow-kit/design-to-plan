@@ -15,8 +15,8 @@ importers:
   .:
     devDependencies:
       '@agentic-workflow-kit/eval-kit':
-        specifier: github:agentic-workflow-kit/eval-kit#v0.1.7
-        version: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/c3d15bfe7c452be7868a8f950a5d9435ed82a8f5
+        specifier: github:agentic-workflow-kit/eval-kit#v0.1.8
+        version: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/5c72926f79f88d1db9c282dfdc1d2b1d0216024c
       prettier:
         specifier: ^3.6.2
         version: 3.9.3
@@ -26,9 +26,9 @@ importers:
 
 packages:
 
-  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/c3d15bfe7c452be7868a8f950a5d9435ed82a8f5':
-    resolution: {gitHosted: true, integrity: sha512-dePGzxJdFR9a3RLpm+Zdt70gW6ZuwhmBfGlyw/t7Q7dHDV6YGKH3PthqoSdXj6hItpaoHctKNfvMNNX6qMkP+A==, tarball: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/c3d15bfe7c452be7868a8f950a5d9435ed82a8f5}
-    version: 0.1.7
+  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/5c72926f79f88d1db9c282dfdc1d2b1d0216024c':
+    resolution: {gitHosted: true, integrity: sha512-+JJnWZU/f6L6fA8v1IZgNsNRlQq1cwO1NGr1kMT7srBdukAexvokeZTfB+2/Ud8Uukt8HOMvsOeRNDqrwlJedg==, tarball: https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/5c72926f79f88d1db9c282dfdc1d2b1d0216024c}
+    version: 0.1.8
     engines: {node: '>=22.13.0', pnpm: '>=11.9.0'}
     hasBin: true
 
@@ -3443,7 +3443,7 @@ packages:
 
 snapshots:
 
-  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/c3d15bfe7c452be7868a8f950a5d9435ed82a8f5':
+  '@agentic-workflow-kit/eval-kit@https://codeload.github.com/agentic-workflow-kit/eval-kit/tar.gz/5c72926f79f88d1db9c282dfdc1d2b1d0216024c':
     dependencies:
       ajv: 8.20.0
 
